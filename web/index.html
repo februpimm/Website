@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="loginPageTitle">หน้าเข้าสู่ระบบ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-dark-blue-bg">
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span class="navbar-title"><span style="color:#fff;">LOG</span><span style="color:#00BCD4;">GUARD</span></span>
+        </div>
+        <ul class="navbar-links">
+            <li><a href="home.html" data-lang-key="navHome">Home</a></li>
+            <li><a href="#" data-lang-key="navDashboard">Dashboard</a></li>
+            <li><a href="chat.html">Chat</a></li>
+            <li><a href="#">LogGuard</a></li>
+        </ul>
+        <div class="navbar-buttons">
+            <a href="index.html" class="navbar-btn-login">Log In</a>
+            <a href="register.html" class="navbar-btn-signup-transparent" data-lang-key="navSignUp">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="login-container-v2">
+        <h2 class="welcome-back" data-lang-key="welcomeBack">Welcome Back 👋</h2>
+        <p class="login-subtitle" data-lang-key="loginToYourAccount">Log in to your account</p>
+        <form id="loginFormV2">
+            <div class="input-group-v2">
+                <label for="emailV2" data-lang-key="emailAddress">Email Address</label>
+                <input type="email" id="emailV2" placeholder="you@example.com" required>
+            </div>
+            <div class="input-group-v2">
+                <label for="passwordV2" data-lang-key="passwordLabel">Password</label>
+                <input type="password" id="passwordV2" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="login-btn-v2" data-lang-key="logInButton">Log In</button>
+        </form>
+        <div class="no-account-group-v2">
+            <p data-lang-key="noAccountV2">Don't have an account?</p>
+            <a href="register.html" class="signup-link-v2" data-lang-key="signUpLinkV2">Sign Up</a>
+        </div>
+    </div>
+
+    <script type="module" src="language.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

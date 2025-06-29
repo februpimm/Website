@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anomaly Detection Dashboard | LOGGUARD</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: #1A1E27;
+            color: #E0EEF0;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .navbar {
+            width: 100%;
+            background: #10151c;
+            box-shadow: 0 4px 24px 0 rgba(0,188,212,0.10), 0 1.5px 0 0 #00BCD4;
+            border-bottom: 2.5px solid #00BCD4;
+            padding: 0 48px;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: box-shadow 0.3s, background 0.3s;
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            height: 70px;
+        }
+        .navbar-title {
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #fff;
+            user-select: none;
+            text-shadow: 0 2px 8px rgba(0,188,212,0.10);
+        }
+        .navbar-title span {
+            color: #00BCD4;
+        }
+        .navbar-links {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+            margin: 0 auto;
+            padding: 0;
+        }
+        .navbar-links a {
+            color: #e0eef0;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            transition: color 0.2s;
+            letter-spacing: 0.2px;
+        }
+        .navbar-links a:hover {
+            color: #00BCD4;
+        }
+        .navbar-buttons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .navbar-btn-login {
+            display: inline-block;
+            background: transparent;
+            color: #00BCD4;
+            border: 2px solid #00BCD4;
+            border-radius: 24px;
+            padding: 10px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px 0 rgba(0,188,212,0.10);
+            outline: none;
+        }
+        .navbar-btn-login:hover, .navbar-btn-login:focus {
+            background: #00BCD4;
+            color: #fff;
+            box-shadow: 0 4px 16px 0 rgba(0,188,212,0.18);
+            text-decoration: none;
+        }
+        .navbar-btn-lang {
+            background: #00BCD4;
+            color: #10151c;
+            border: none;
+            border-radius: 24px;
+            padding: 10px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px 0 rgba(0,188,212,0.10);
+            outline: none;
+        }
+        .navbar-btn-lang:hover, .navbar-btn-lang:focus {
+            background: #0097A7;
+            color: #fff;
+        }
+        .navbar-btn-signup-transparent {
+            display: inline-block;
+            background: transparent;
+            color: #00BCD4;
+            border: 2px solid #00BCD4;
+            border-radius: 24px;
+            padding: 10px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px 0 rgba(0,188,212,0.10);
+            outline: none;
+        }
+        .navbar-btn-signup-transparent:hover, .navbar-btn-signup-transparent:focus {
+            background: #00BCD4;
+            color: #10151c;
+            box-shadow: 0 4px 16px 0 rgba(0,188,212,0.18);
+            text-decoration: none;
+        }
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            margin-top: 80px;
+            width: 100vw;
+            background: #1A1E27;
+        }
+        .sidebar {
+            width: 240px;
+            background: #10151c;
+            color: #00BCD4;
+            border-radius: 18px 0 0 18px;
+            box-shadow: 2px 0 16px 0 rgba(0,188,212,0.08);
+            padding: 32px 0 0 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            border-right: 1.5px solid #00BCD4;
+            position: fixed;
+            left: 0;
+            top: 80px;
+            height: calc(100vh - 80px);
+            z-index: 10;
+        }
+        .sidebar-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-left: 32px;
+            margin-bottom: 36px;
+            color: #00BCD4;
+            letter-spacing: 1px;
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar-menu li {
+            margin-bottom: 8px;
+        }
+        .sidebar-menu a {
+            display: block;
+            color: #e0eef0;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 8px 0 0 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .sidebar-menu a.active, .sidebar-menu a:hover {
+            background: #00BCD4;
+            color: #10151c;
+        }
+        .main-content {
+            flex: 1;
+            padding: 36px 48px 36px 300px;
+            max-width: 1600px;
+            margin: 0 auto;
+            background: #1A1E27;
+        }
+        .dashboard-header {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: #00BCD4;
+        }
+        .overview-cards {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .overview-card {
+            background: #10151c;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px 0 rgba(0,188,212,0.10);
+            padding: 24px 32px;
+            flex: 1;
+            min-width: 180px;
+        }
+        .overview-card-title {
+            font-size: 1.1rem;
+            color: #E0EEF0;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .overview-card-value {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #00BCD4;
+            letter-spacing: 1px;
+        }
+        .overview-card-critical {
+            color: #FF5252;
+            font-size: 2rem;
+            font-weight: 900;
+        }
+        .dashboard-graph {
+            background: #10151c;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px 0 rgba(0,188,212,0.10);
+            padding: 24px 32px 16px 32px;
+            margin-bottom: 32px;
+        }
+        .dashboard-graph-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #E0EEF0;
+            margin-bottom: 12px;
+        }
+        .dashboard-graph-canvas {
+            width: 100%;
+            max-width: 700px;
+            height: 180px;
+            margin: 0 auto;
+            display: block;
+            background: #10151c;
+            border-radius: 8px;
+        }
+        .recent-anomalies {
+            background: #10151c;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px 0 rgba(0,188,212,0.10);
+            padding: 24px 32px;
+        }
+        .recent-anomalies-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #00BCD4;
+            margin-bottom: 18px;
+        }
+        .anomaly-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .anomaly-table th, .anomaly-table td {
+            padding: 10px 8px;
+            text-align: left;
+        }
+        .anomaly-table th {
+            background: #00BCD4;
+            color: #10151c;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .anomaly-table tr {
+            border-bottom: 1px solid #00BCD4;
+        }
+        .anomaly-table td {
+            color: #E0EEF0;
+            font-size: 1rem;
+        }
+        .anomaly-table td.low {
+            color: #00BCD4;
+            font-weight: 700;
+        }
+        .btn-primary {
+            background: #00BCD4;
+            color: #10151c;
+            border-radius: 8px;
+            border: none;
+            padding: 8px 18px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background: #0097A7;
+            color: #fff;
+        }
+        @media (max-width: 900px) {
+            .dashboard-container { flex-direction: column; }
+            .sidebar { width: 100%; min-height: unset; flex-direction: row; padding: 0; position: static; height: auto; }
+            .sidebar-title { margin: 24px; }
+            .sidebar-menu { display: flex; flex-direction: row; gap: 0; }
+            .sidebar-menu a { border-radius: 8px 8px 0 0; padding: 12px 18px; }
+            .main-content { padding: 18px 12px 18px 12px; }
+            .overview-cards { flex-direction: column; gap: 12px; }
+        }
+        .dashboard-chatbot-sidebar {
+            position: fixed;
+            right: 0;
+            top: 80px;
+            width: 400px;
+            height: calc(100vh - 80px);
+            background: none;
+            display: flex;
+            align-items: flex-start;
+            z-index: 100;
+        }
+        @media (max-width: 1200px) {
+            .dashboard-chatbot-sidebar { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar LOGGUARD -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span class="navbar-title"><span style="color:#fff;">LOG</span><span style="color:#00BCD4;">GUARD</span></span>
+        </div>
+        <ul class="navbar-links" style="margin: 0 auto;">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="dashboard.html" class="active">Dashboard</a></li>
+            <li><a href="chat.html">Chat</a></li>
+            <li><a href="#">LogGuard</a></li>
+        </ul>
+        <div class="navbar-buttons">
+            <a href="index.html" class="navbar-btn-login">Log In</a>
+            <a href="register.html" class="navbar-btn-signup-transparent" data-lang-key="navSignUp">Sign Up</a>
+        </div>
+    </nav>
+    <!-- /Navbar -->
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="sidebar-title">Anomaly Detection</div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="#">Traffic Analysis</a></li>
+                <li><a href="#">Anomaly Alerts</a></li>
+                <li><a href="#">Reports</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <div class="dashboard-header">Dashboard Overview</div>
+            <div class="overview-cards">
+                <div class="overview-card">
+                    <div class="overview-card-title">Total Requests</div>
+                    <div class="overview-card-value">2,718</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-card-title">Anomalies Detected</div>
+                    <div class="overview-card-value">232</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-card-title">Warning</div>
+                    <div class="overview-card-value">4</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-card-title">System Health</div>
+                    <div class="overview-card-critical">Critical</div>
+                </div>
+            </div>
+            <div class="dashboard-graph">
+                <div class="dashboard-graph-title">Traffic Overview</div>
+                <canvas id="trafficChart" class="dashboard-graph-canvas"></canvas>
+                <div style="display:flex;gap:24px;justify-content:center;margin-top:8px;">
+                    <span style="color:#2196f3;font-weight:700;">&#9632; Normal Traffic</span>
+                    <span style="color:#e57373;font-weight:700;">&#9632; Anomalies Traffic</span>
+                </div>
+            </div>
+            <div class="recent-anomalies">
+                <div class="recent-anomalies-title">Recent Anomalies</div>
+                <table class="anomaly-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>IP Address</th>
+                            <th>Request</th>
+                            <th>Status</th>
+                            <th>Severity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>28/Jun/2025:23:43:18 +0700</td>
+                            <td>42.112.71.139</td>
+                            <td>/</td>
+                            <td>200</td>
+                            <td class="low">Low</td>
+                        </tr>
+                        <tr>
+                            <td>28/Jun/2025:23:43:14 +0700</td>
+                            <td>27.74.123.127</td>
+                            <td>/dashboard_data</td>
+                            <td>200</td>
+                            <td class="low">Low</td>
+                        </tr>
+                        <tr>
+                            <td>28/Jun/2025:23:43:09 +0700</td>
+                            <td>27.74.123.127</td>
+                            <td>/dashboard_data</td>
+                            <td>200</td>
+                            <td class="low">Low</td>
+                        </tr>
+                        <tr>
+                            <td>28/Jun/2025:23:43:04 +0700</td>
+                            <td>27.74.123.127</td>
+                            <td>/dashboard_data</td>
+                            <td>200</td>
+                            <td class="low">Low</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Chart.js fallback check
+        if (typeof Chart === 'undefined') {
+            const graphDiv = document.querySelector('.dashboard-graph');
+            if (graphDiv) {
+                graphDiv.innerHTML += '<div style="color:#ff5252;text-align:center;margin-top:16px;">Graph failed to load. Please check your internet connection or Chart.js CDN.</div>';
+            }
+            return;
+        }
+        // Mock chart data
+        const ctx = document.getElementById('trafficChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['2025-06-28 12:00', '2025-06-28 13:00', '2025-06-28 14:00'],
+                datasets: [
+                    {
+                        label: 'Normal Traffic',
+                        data: [2500, 1200, 200],
+                        borderColor: '#2196f3',
+                        backgroundColor: 'rgba(33,150,243,0.08)',
+                        fill: true,
+                        tension: 0.4,
+                    },
+                    {
+                        label: 'Anomalies Traffic',
+                        data: [50, 30, 10],
+                        borderColor: '#e57373',
+                        backgroundColor: 'rgba(229,115,115,0.08)',
+                        fill: true,
+                        tension: 0.4,
+                    }
+                ]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { color: '#eee' }, beginAtZero: true }
+                }
+            }
+        });
+    });
+    </script>
+    <script type="module">
+    import { renderNavbarButtons } from './script.js';
+    document.addEventListener('DOMContentLoaded', renderNavbarButtons);
+    </script>
+</body>
+</html> 

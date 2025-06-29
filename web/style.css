@@ -1,0 +1,1017 @@
+/* style.css: ไฟล์ CSS สำหรับการจัดรูปแบบหน้า Login, Register และ Home */
+
+/* การปรับปรุง: เพิ่ม box-sizing เพื่อให้การคำนวณขนาดขององค์ประกอบเป็นไปอย่างสม่ำเสมอ */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', Arial, sans-serif; /* ใช้ Inter font หรือ fallback เป็น Arial */
+    background-color: #1A1E27; /* สีพื้นหลังหลัก: ดำอมน้ำเงินเข้มตามรูป */
+    display: flex;
+    flex-direction: column; /* จัดเรียงองค์ประกอบในแนวตั้ง */
+    justify-content: flex-start; /* เริ่มต้นจากด้านบน */
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    position: relative; /* สำหรับการจัดตำแหน่งของ language-switcher-new */
+    color: #E0EEF0; /* สีข้อความเริ่มต้นสำหรับ body ที่สว่างขึ้นเล็กน้อย */
+    overflow-x: hidden; /* ป้องกัน horizontal scrollbar */
+    text-rendering: optimizeLegibility; /* ปรับปรุงการเรนเดอร์ข้อความให้คมชัดขึ้น */
+    -webkit-font-smoothing: antialiased; /* สำหรับ Safari/Chrome */
+    -moz-osx-font-smoothing: grayscale; /* สำหรับ Firefox */
+}
+
+/* --- Navbar Modern & Distinct --- */
+.navbar {
+    width: 100%;
+    background: #10151c;
+    box-shadow: 0 4px 24px 0 rgba(0,188,212,0.10), 0 1.5px 0 0 #00BCD4;
+    border-bottom: 2.5px solid #00BCD4;
+    padding: 0 48px;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: box-shadow 0.3s, background 0.3s;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    height: 70px;
+}
+
+.navbar-logo {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px; /* ทำให้โลโก้โค้งมน */
+}
+
+.navbar-title {
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #fff;
+    user-select: none;
+    text-shadow: 0 2px 8px rgba(0,188,212,0.10);
+}
+.navbar-title span {
+    color: #00BCD4;
+}
+
+/* --- Navbar Links --- */
+.navbar-links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+}
+.navbar-links li {
+    margin: 0;
+    padding: 0;
+}
+.navbar-links a {
+    color: #e0eef0;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    transition: color 0.2s;
+    letter-spacing: 0.2px;
+}
+.navbar-links a:hover {
+    color: #00BCD4;
+}
+
+.navbar-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* สไตล์สำหรับปุ่มเปลี่ยนภาษาใน Navbar */
+.language-switcher-navbar {
+    position: relative;
+    margin-right: 10px;
+}
+
+.language-switcher-navbar .lang-toggle-button {
+    background-color: #00BCD4; /* สีฟ้าอมเขียว */
+    color: #1A1E27; /* สีข้อความ: ดำอมน้ำเงินเข้ม */
+    border: none;
+    border-radius: 8px; /* มุมโค้งมน */
+    padding: 8px 14px; /* ลด padding เพื่อให้พอดีกับ navbar */
+    font-size: 14px; /* ลดขนาดตัวอักษร */
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* ลดระยะห่าง */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* ลดเงา */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.language-switcher-navbar .lang-toggle-button:hover {
+    background-color: #00A3B2; /* สีเข้มขึ้นเมื่อโฮเวอร์ */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.language-switcher-navbar .toggle-icon {
+    font-size: 18px; /* ลดขนาดไอคอน */
+    line-height: 1;
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+}
+
+.language-switcher-navbar .lang-toggle-button.active .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.language-switcher-navbar .lang-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #333333;
+    min-width: 150px; /* ลดความกว้าง */
+    box-shadow: 0 8px 20px 0px rgba(0,0,0,0.6);
+    border-radius: 8px;
+    margin-top: 8px; /* ลดระยะห่าง */
+    right: 0;
+    overflow: hidden;
+    border: 1px solid #444444;
+}
+
+.language-switcher-navbar .lang-dropdown-content.show {
+    display: block;
+}
+
+.language-switcher-navbar .lang-option {
+    color: #f0f0f0;
+    padding: 12px 16px; /* ลด padding */
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 14px; /* ลดขนาดตัวอักษร */
+}
+
+.language-switcher-navbar .lang-option:hover {
+    background-color: #555555;
+    color: #00BCD4;
+}
+
+.navbar-btn-login {
+    display: inline-block;
+    background: transparent;
+    color: #00BCD4;
+    border: 2px solid #00BCD4;
+    border-radius: 24px;
+    padding: 10px 32px;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px 0 rgba(0,188,212,0.10);
+    outline: none;
+}
+.navbar-btn-login:hover, .navbar-btn-login:focus {
+    background: #00BCD4;
+    color: #fff;
+    box-shadow: 0 4px 16px 0 rgba(0,188,212,0.18);
+    text-decoration: none;
+}
+
+.navbar-btn-signup-transparent {
+    display: inline-block;
+    background: linear-gradient(90deg, #00BCD4 60%, #0097A7 100%);
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 32px;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px 0 rgba(0,188,212,0.13);
+    outline: none;
+}
+.navbar-btn-signup-transparent:hover, .navbar-btn-signup-transparent:focus {
+    background: linear-gradient(90deg, #0097A7 60%, #00BCD4 100%);
+    color: #fff;
+    box-shadow: 0 4px 16px 0 rgba(0,188,212,0.18);
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        padding: 0 10px;
+        min-height: 54px;
+    }
+    .navbar-title {
+        font-size: 20px;
+    }
+    .navbar-btn-login, .navbar-btn-signup-transparent {
+        font-size: 15px;
+        padding: 6px 14px;
+    }
+    .navbar-brand {
+        height: 54px;
+    }
+}
+
+/* สไตล์สำหรับคอนเทนเนอร์ของหน้า Login และ Register (ดีไซน์เดิม) */
+.login-container, .register-container {
+    background-color: #222222; /* สีพื้นหลังของกล่องฟอร์ม: เทาเข้มขึ้น */
+    padding: 45px 55px; /* เพิ่ม padding เล็กน้อย */
+    border-radius: 15px; /* มุมโค้งมนที่เด่นชัดขึ้น */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); /* เงาที่คมชัดและนุ่มนวลขึ้น */
+    text-align: center;
+    width: 420px; /* เพิ่มความกว้างเล็กน้อย */
+    max-width: 92%; /* เพื่อให้ responsive บนหน้าจอเล็ก */
+    border: 1px solid #3a3a3a; /* เพิ่มเส้นขอบบางๆ เพื่อความคมชัด */
+    animation: fadeIn 0.8s ease-out; /* เพิ่ม animation เมื่อโหลดหน้า */
+    margin-top: 120px; /* เพิ่มระยะห่างจาก Navbar */
+}
+
+/* สไตล์สำหรับคอนเทนเนอร์ Login ดีไซน์ใหม่ (สีน้ำเงินเข้มตามรูปภาพ) */
+.login-container-v2 {
+    background-color: #1A1E27; /* สีพื้นหลังของกล่องฟอร์ม: น้ำเงินเข้มตามรูปภาพ */
+    padding: 45px 55px; /* เพิ่ม padding เล็กน้อย */
+    border-radius: 20px; /* มุมโค้งมนที่เด่นชัดขึ้น */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); /* เงาที่คมชัดและลึกขึ้น */
+    text-align: center;
+    width: 450px; /* เพิ่มความกว้างเล็กน้อย */
+    max-width: 92%; /* เพื่อให้ responsive บนหน้าจอเล็ก */
+    border: 2px solid #00BCD4; /* เพิ่มเส้นขอบสีฟ้าอมเขียว */
+    animation: fadeIn 0.8s ease-out; /* เพิ่ม animation เมื่อโหลดหน้า */
+    margin-top: 120px; /* เพิ่มระยะห่างจาก Navbar */
+}
+
+/* สไตล์สำหรับคอนเทนเนอร์ Register ดีไซน์ใหม่ (สีน้ำเงินเข้มตามรูปภาพ) */
+.register-container-v2 {
+    background-color: #1A1E27; /* สีพื้นหลังของกล่องฟอร์ม: น้ำเงินเข้มตามรูปภาพ */
+    padding: 45px 55px; /* เพิ่ม padding เล็กน้อย */
+    border-radius: 20px; /* มุมโค้งมนที่เด่นชัดขึ้น */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); /* เงาที่คมชัดและลึกขึ้น */
+    text-align: center;
+    width: 450px; /* เพิ่มความกว้างเล็กน้อย */
+    max-width: 92%; /* เพื่อให้ responsive บนหน้าจอเล็ก */
+    border: 2px solid #00BCD4; /* เพิ่มเส้นขอบสีฟ้าอมเขียว */
+    animation: fadeIn 0.8s ease-out; /* เพิ่ม animation เมื่อโหลดหน้า */
+    margin-top: 120px; /* เพิ่มระยะห่างจาก Navbar */
+}
+
+/* Keyframe สำหรับ animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* สไตล์สำหรับหัวข้อ */
+h2 {
+    color: #FFD700; /* สีเหลืองทองสำหรับหัวข้อ (สำหรับดีไซน์เก่า) */
+    margin-bottom: 40px; /* เพิ่มระยะห่างด้านล่าง */
+    font-size: 36px; /* ขนาดตัวอักษรของหัวข้อที่ใหญ่ขึ้น */
+    font-weight: 800; /* ตัวอักษรหนาขึ้นมาก */
+    letter-spacing: 2px; /* เพิ่มระยะห่างตัวอักษรเล็กน้อย */
+    text-transform: uppercase; /* ทำให้เป็นตัวพิมพ์ใหญ่ */
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* เพิ่มเงาข้อความ */
+}
+
+/* สไตล์สำหรับหัวข้อ Welcome Back ในดีไซน์ใหม่ (สีขาวอมฟ้า) */
+.welcome-back {
+    color: #E0EEF0; /* สีข้อความ Welcome Back (สีขาวอมฟ้า) */
+    margin-bottom: 15px;
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* สไตล์สำหรับหัวข้อ Create an Account ในดีไซน์ใหม่ (สีขาวอมฟ้า) */
+.create-account-title {
+    color: #E0EEF0; /* สีข้อความ Create an Account (สีขาวอมฟ้า) */
+    margin-bottom: 15px;
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* สไตล์สำหรับคำบรรยาย Log in to your account ในดีไซน์ใหม่ (สีเทาอมฟ้า) */
+.login-subtitle {
+    color: #AAB7C4; /* สีข้อความ Log in to your account (สีเทาอมฟ้า) */
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+/* สไตล์สำหรับคำบรรยาย Sign up to get started ในดีไซน์ใหม่ (สีเทาอมฟ้า) */
+.signup-subtitle {
+    color: #AAB7C4; /* สีข้อความ Sign up to get started (สีเทาอมฟ้า) */
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+/* สไตล์สำหรับกลุ่ม input (label + input field) */
+.input-group { /* สำหรับดีไซน์เก่า */
+    margin-bottom: 28px; /* เพิ่มระยะห่างด้านล่าง */
+    text-align: left;
+}
+
+.input-group label { /* สำหรับดีไซน์เก่า */
+    display: block;
+    margin-bottom: 12px; /* เพิ่มระยะห่างด้านล่าง */
+    color: #FFD700; /* สีเหลืองทองสำหรับ Label */
+    font-weight: bold; /* ตัวอักษรหนา */
+    font-size: 16px;
+    letter-spacing: 0.8px;
+}
+
+.input-group input[type="email"],
+.input-group input[type="password"] { /* สำหรับดีไซน์เก่า */
+    width: 100%; /* ใช้ 100% เพื่อให้เต็มความกว้าง */
+    padding: 16px 18px; /* เพิ่ม padding */
+    border: none; /* ลบเส้นขอบ */
+    border-radius: 10px; /* มุมโค้งมนที่มากขึ้น */
+    font-size: 17px;
+    background-color: #1e1e1e; /* ปรับพื้นหลัง input field ให้แตกต่างจาก container เล็กน้อย */
+    color: #f0f0f0; /* สีข้อความใน input field: ขาวอมเทา */
+    transition: box-shadow 0.3s ease; /* เปลี่ยน transition เป็น box-shadow เท่านั้น */
+    text-indent: 5px; /* เพิ่มระยะห่างข้อความจากขอบซ้ายเล็กน้อย */
+    box-shadow: inset 0 0 0 1px #333333; /* เพิ่มเงาด้านในเพื่อจำลองเส้นขอบที่นุ่มนวล */
+}
+
+.input-group input[type="email"]:focus,
+.input-group input[type="password"]:focus { /* สำหรับดีไซน์เก่า */
+    box-shadow: inset 0 0 0 2px #FFD700, 0 0 0 5px rgba(255, 215, 0, 0.6); /* เงาเมื่อ focus ที่ชัดเจนและเป็นประกายขึ้น */
+    outline: none; /* ลบ outline เริ่มต้น */
+}
+
+.input-group input[type="email"]::placeholder,
+.input-group input[type="password"]::placeholder { /* สำหรับดีไซน์เก่า */
+    color: #a0a0a0; /* สี placeholder ที่สว่างขึ้นเล็กน้อย */
+    opacity: 0.8; /* ทำให้ placeholder ดูจางลงเล็กน้อย */
+}
+
+/* สไตล์สำหรับกลุ่ม input ในดีไซน์ใหม่ */
+.input-group-v2 {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.input-group-v2 label {
+    display: block;
+    margin-bottom: 10px;
+    color: #E0EEF0; /* สี Label ในดีไซน์ใหม่ (สีขาวอมฟ้า) */
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.input-group-v2 input[type="email"],
+.input-group-v2 input[type="password"],
+.input-group-v2 input[type="text"], /* เพิ่มสำหรับ Address */
+.input-group-v2 input[type="tel"] { /* เพิ่มสำหรับ Phone Number */
+    width: 100%;
+    padding: 15px 20px;
+    border: 1px solid #2C3E50; /* เส้นขอบ (สีน้ำเงินเข้มขึ้น) */
+    border-radius: 10px;
+    font-size: 17px;
+    background-color: #1A202C; /* สีพื้นหลัง input field (สีน้ำเงินเข้มกว่า) */
+    color: #E0EEF0; /* สีข้อความใน input field (สีขาวอมฟ้า) */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group-v2 input[type="email"]:focus,
+.input-group-v2 input[type="password"]:focus,
+.input-group-v2 input[type="text"]:focus,
+.input-group-v2 input[type="tel"]:focus {
+    border-color: #00BCD4; /* สีเส้นขอบเมื่อ focus (สีฟ้าอมเขียว) */
+    box-shadow: 0 0 0 4px rgba(0, 188, 212, 0.4); /* เงาเมื่อ focus */
+    outline: none;
+}
+
+.input-group-v2 input[type="email"]::placeholder,
+.input-group-v2 input[type="password"]::placeholder,
+.input-group-v2 input[type="text"]::placeholder,
+.input-group-v2 input[type="tel"]::placeholder {
+    color: #6C7A89; /* สี placeholder */
+}
+
+
+.checkbox-group { /* สำหรับดีไซน์เก่า */
+    text-align: left;
+    margin-bottom: 35px; /* เพิ่มระยะห่างด้านล่าง */
+    display: flex; /* ใช้ flexbox สำหรับจัดเรียง checkbox และ label */
+    align-items: center; /* จัดให้อยู่ตรงกลางแนวตั้ง */
+}
+
+.checkbox-group input[type="checkbox"] { /* สำหรับดีไซน์เก่า */
+    appearance: none; /* ซ่อน checkbox เริ่มต้น */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 22px; /* ขนาดใหญ่ขึ้นเล็กน้อย */
+    height: 22px; /* ขนาดใหญ่ขึ้นเล็กน้อย */
+    border: 2px solid #FFD700; /* เส้นขอบสีเหลืองทอง */
+    border-radius: 5px; /* มุมโค้งมน */
+    background-color: #333333; /* พื้นหลัง checkbox */
+    cursor: pointer;
+    position: relative;
+    margin-right: 12px; /* เพิ่มระยะห่างจาก label */
+    flex-shrink: 0; /* ป้องกันไม่ให้ checkbox หดตัว */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.checkbox-group input[type="checkbox"]:checked { /* สำหรับดีไซน์เก่า */
+    background-color: #FFD700; /* สีพื้นหลังเมื่อเลือก */
+    border-color: #FFD700;
+}
+
+.checkbox-group input[type="checkbox"]:checked::after { /* สำหรับดีไซน์เก่า */
+    content: '\2713'; /* เครื่องหมายถูก Unicode */
+    font-size: 16px; /* ขนาดเครื่องหมายถูก */
+    color: #1a1a1a; /* สีเครื่องหมายถูก */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.checkbox-group label { /* สำหรับดีไซน์เก่า */
+    font-size: 15px;
+    color: #e0e0e0; /* สีข้อความ checkbox ที่สว่างขึ้น */
+    cursor: pointer; /* แสดงว่าเป็น clickable */
+    margin-bottom: 0; /* ลบ margin-bottom ที่อาจจะมาจาก .input-group label */
+}
+
+
+/* สไตล์สำหรับปุ่ม submit (ดีไซน์เก่า) */
+button[type="submit"] {
+    background-color: #FFD700; /* สีเหลืองทองสำหรับปุ่ม */
+    color: #1a1a1a; /* สีข้อความบนปุ่ม: ดำเข้ม */
+    padding: 18px 0; /* เพิ่ม padding */
+    border: none;
+    border-radius: 10px; /* มุมโค้งมน */
+    cursor: pointer;
+    font-size: 20px; /* ขนาดตัวอักษรใหญ่ขึ้น */
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* เพิ่ม transition */
+    margin-top: 20px; /* เพิ่มระยะห่างด้านบน */
+    letter-spacing: 1.2px; /* เพิ่มระยะห่างตัวอักษร */
+    text-transform: uppercase; /* ทำให้เป็นตัวพิมพ์ใหญ่ */
+}
+
+button[type="submit"]:hover {
+    background-color: #e6c200; /* สีเหลืองเข้มขึ้นเมื่อโฮเวอร์ */
+    color: #000000; /* สีข้อความบนปุ่ม: ดำสนิท */
+    transform: translateY(-4px); /* ยกปุ่มขึ้นเล็กน้อยเมื่อโฮเวอร์ */
+    box-shadow: 0 12px 30px rgba(255, 215, 0, 0.6); /* เพิ่มเงาเมื่อโฮเวอร์ */
+}
+
+button[type="submit"]:active {
+    transform: translateY(0); /* ปุ่มกลับสู่ตำแหน่งเดิมเมื่อกด */
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+/* สไตล์สำหรับปุ่ม Login ในดีไซน์ใหม่ (สีฟ้าอมเขียว) */
+.login-btn-v2 {
+    background-color: #00BCD4;
+    color: #1A1E27;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 0;
+    font-size: 22px;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 4px 16px rgba(0, 188, 212, 0.15);
+    letter-spacing: 1px;
+}
+
+.login-btn-v2:hover {
+    background-color: #00A3B2;
+    color: #fff;
+}
+
+.login-btn-v2:active {
+    background-color: #0097A7;
+    color: #fff;
+}
+
+/* สไตล์สำหรับปุ่ม Register ในดีไซน์ใหม่ (สีฟ้าอมเขียว) */
+.register-btn-v2 {
+    background-color: #00BCD4; /* สีฟ้าอมเขียว */
+    color: #1A1E27; /* สีข้อความ (สีดำอมน้ำเงิน) */
+    padding: 15px 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 25px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.register-btn-v2:hover {
+    background-color: #00A3B2; /* สีเข้มขึ้นเมื่อโฮเวอร์ */
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 188, 212, 0.4);
+}
+
+.register-btn-v2:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 188, 212, 0.2);
+}
+
+
+/* สไตล์สำหรับลิงก์ด้านล่างฟอร์ม (ดีไซน์เก่า) */
+.links {
+    margin-top: 35px; /* เพิ่มระยะห่างด้านบน */
+    font-size: 15px;
+    line-height: 1.8; /* เพิ่มระยะห่างบรรทัด */
+}
+
+.links a {
+    color: #FFD700; /* สีเหลืองทองสำหรับลิงก์ */
+    text-decoration: none;
+    margin-bottom: 10px; /* ปรับระยะห่างด้านล่าง */
+    display: block;
+    transition: color 0.3s ease, text-decoration 0.3s ease; /* เพิ่ม transition */
+}
+
+.links a:hover {
+    color: #e6c200; /* สีเหลืองเข้มขึ้นเมื่อโฮเวอร์ */
+    text-decoration: underline; /* ขีดเส้นใต้เมื่อโฮเวอร์ */
+}
+
+.links p {
+    color: #c0c0c0; /* สีข้อความทั่วไปที่สว่างขึ้นเล็กน้อย */
+    margin-top: 18px; /* เพิ่มระยะห่างด้านบน */
+}
+
+/* สไตล์สำหรับกลุ่ม "ยังไม่มีบัญชีใช่หรือไม่?" และปุ่ม "Register" (ดีไซน์เก่า) */
+.no-account-group {
+    display: flex; /* ใช้ flexbox เพื่อจัดเรียงข้อความและปุ่มในบรรทัดเดียวกัน */
+    align-items: center; /* จัดให้อยู่ตรงกลางแนวตั้ง */
+    justify-content: center; /* จัดให้อยู่ตรงกลางแนวนอน */
+    margin-top: 20px; /* เพิ่มระยะห่างจากลิงก์ด้านบน */
+    gap: 10px; /* ระยะห่างระหว่างข้อความกับปุ่ม */
+    flex-wrap: wrap; /* ให้ขึ้นบรรทัดใหม่เมื่อหน้าจอเล็ก */
+}
+
+.no-account-group p {
+    margin: 0; /* ลบ margin เริ่มต้นของ p */
+    color: #d0d0d0; /* สีข้อความ */
+    font-size: 15px;
+}
+
+.register-button-link {
+    background-color: transparent; /* เปลี่ยนเป็นพื้นหลังโปร่งใส */
+    color: #FFD700; /* เปลี่ยนสีข้อความเป็นสีเหลืองทอง */
+    padding: 0; /* ลบ padding */
+    border: none; /* ลบเส้นขอบ */
+    border-radius: 0; /* ลบ border-radius */
+    cursor: pointer;
+    font-size: 15px; /* ปรับขนาดตัวอักษรเล็กน้อย */
+    font-weight: bold;
+    text-decoration: none; /* ลบขีดเส้นใต้ */
+    transition: color 0.3s ease; /* เปลี่ยน transition เป็น color เท่านั้น */
+    display: inline-block; /* ทำให้สามารถจัดวางใน flexbox ได้ */
+    letter-spacing: 0; /* ลบ letter-spacing */
+    text-transform: none; /* ลบ text-transform */
+}
+
+.register-button-link:hover {
+    background-color: transparent; /* คงพื้นหลังโปร่งใส */
+    color: #e6c200; /* สีเหลืองเข้มขึ้นเมื่อโฮเวอร์ */
+    transform: none; /* ลบ transform */
+    box-shadow: none; /* ลบ box-shadow */
+    text-decoration: underline; /* เพิ่มขีดเส้นใต้เมื่อโฮเวอร์ */
+}
+
+.register-button-link:active {
+    transform: none;
+    box-shadow: none;
+}
+
+/* สไตล์สำหรับ "Don't have an account? Sign Up" ในดีไซน์ใหม่ */
+.no-account-group-v2 { /* เปลี่ยนชื่อ class เพื่อไม่ให้ชนกับดีไซน์เก่า */
+    display: flex; /* ใช้ flexbox เพื่อจัดเรียงข้อความและปุ่มในบรรทัดเดียวกัน */
+    align-items: center; /* จัดให้อยู่ตรงกลางแนวตั้ง */
+    justify-content: center; /* จัดให้อยู่ตรงกลางแนวนอน */
+    margin-top: 30px;
+    gap: 10px; /* ระยะห่างระหว่างข้อความกับปุ่ม */
+    flex-wrap: wrap; /* ให้ขึ้นบรรทัดใหม่เมื่อหน้าจอเล็ก */
+}
+
+.no-account-group-v2 p {
+    color: #E0EEF0; /* สีข้อความ (เปลี่ยนเป็นสีขาวอมฟ้า) */
+    font-size: 15px;
+    margin: 0; /* ลบ margin เริ่มต้นของ p */
+}
+
+/* ลิงก์ Sign Up ด้านล่าง (ข้อความขีดเส้นใต้) */
+.signup-link-v2 {
+    background-color: transparent; /* พื้นหลังโปร่งใส */
+    color: #00BCD4; /* สีข้อความ (สีฟ้าอมเขียว) */
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    text-decoration: underline; /* ขีดเส้นใต้ */
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.signup-link-v2:hover {
+    color: #00A3B2; /* สีเข้มขึ้นเมื่อโฮเวอร์ */
+}
+
+/* สไตล์สำหรับ "Already have an account? Log In" ในดีไซน์ใหม่ */
+.already-account-group-v2 {
+    display: flex; /* ใช้ flexbox เพื่อจัดเรียงข้อความและลิงก์ในบรรทัดเดียวกัน */
+    align-items: center; /* จัดให้อยู่ตรงกลางแนวตั้ง */
+    justify-content: center; /* จัดให้อยู่ตรงกลางแนวนอน */
+    margin-top: 30px;
+    gap: 10px; /* ระยะห่างระหว่างข้อความกับลิงก์ */
+    flex-wrap: wrap; /* ให้ขึ้นบรรทัดใหม่เมื่อหน้าจอเล็ก */
+}
+
+.already-account-group-v2 p {
+    color: #AAB7C4; /* สีข้อความ (สีเทาอมฟ้า) */
+    font-size: 15px;
+    margin: 0; /* ลบ margin เริ่มต้นของ p */
+}
+
+/* ลิงก์ Log In ด้านล่าง (ข้อความขีดเส้นใต้) */
+.login-link-v2 {
+    background-color: transparent; /* พื้นหลังโปร่งใส */
+    color: #00BCD4; /* สีข้อความ (สีฟ้าอมเขียว) */
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    text-decoration: underline; /* ขีดเส้นใต้ */
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.login-link-v2:hover {
+    color: #00A3B2; /* สีเข้มขึ้นเมื่อโฮเวอร์ */
+}
+
+
+/* สไตล์สำหรับตัวเปลี่ยนภาษาแบบใหม่ (Dropdown) */
+.language-switcher-new {
+    position: absolute;
+    top: 30px; /* ปรับตำแหน่งเล็กน้อย */
+    right: 30px; /* ปรับตำแหน่งเล็กน้อย */
+    z-index: 1000; /* ให้แสดงผลอยู่ด้านบนสุด */
+}
+
+.lang-toggle-button {
+    background-color: #00BCD4; /* สีฟ้าอมเขียว */
+    color: #1A1E27; /* สีข้อความ: ดำอมน้ำเงินเข้ม */
+    border: none;
+    border-radius: 8px; /* มุมโค้งมน */
+    padding: 12px 18px; /* เพิ่ม padding */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* ระยะห่างระหว่างข้อความกับไอคอน */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* เงาที่ชัดเจนขึ้น */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lang-toggle-button:hover {
+    background-color: #00A3B2; /* สีเข้มขึ้นเมื่อโฮเวอร์ */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.toggle-icon {
+    font-size: 22px; /* ขนาดไอคอนใหญ่ขึ้น */
+    line-height: 1;
+    transform: rotate(0deg); /* เริ่มต้นเป็นเครื่องหมายลบ */
+    transition: transform 0.3s ease;
+}
+
+.lang-toggle-button.active .toggle-icon {
+    transform: rotate(180deg); /* หมุนไอคอนเมื่อ active (อาจจะเปลี่ยนเป็นลูกศรชี้ขึ้น) */
+}
+
+.lang-dropdown-content {
+    display: none; /* ซ่อน dropdown โดยค่าเริ่มต้น */
+    position: absolute;
+    background-color: #333333; /* พื้นหลัง dropdown */
+    min-width: 170px; /* เพิ่มความกว้างเล็กน้อย */
+    box-shadow: 0 12px 25px 0px rgba(0,0,0,0.6); /* เงาที่ชัดเจนขึ้น */
+    border-radius: 10px; /* มุมโค้งมน */
+    margin-top: 12px; /* ระยะห่างจากปุ่ม toggle */
+    right: 0; /* เปลี่ยนจาก left: 0 เป็น right: 0 เพื่อจัดตำแหน่งตามรูปภาพ */
+    overflow: hidden; /* เพื่อให้มุมโค้งมนสวยงาม */
+    border: 1px solid #444444; /* เพิ่มเส้นขอบ */
+}
+
+.lang-dropdown-content.show {
+    display: block; /* แสดง dropdown เมื่อมี class 'show' */
+}
+
+.lang-option {
+    color: #f0f0f0; /* สีข้อความใน option */
+    padding: 14px 18px; /* เพิ่ม padding */
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 15px;
+}
+
+.lang-option:hover {
+    background-color: #555555; /* สีพื้นหลังเมื่อโฮเวอร์ */
+    color: #00BCD4; /* สีข้อความเมื่อโฮเวอร์ */
+}
+
+/* สไตล์เฉพาะสำหรับหน้าลงทะเบียน */
+.register-container {
+    padding: 50px;
+    margin-top: 120px; /* เพิ่มระยะห่างจาก Navbar */
+}
+
+.register-container h2 {
+    color: #00BCD4; /* สีฟ้าอมเขียวสำหรับหัวข้อ */
+    margin-bottom: 25px;
+}
+
+.register-container p {
+    color: #e0e0e0; /* สีข้อความทั่วไป */
+    line-height: 1.8; /* เพิ่มระยะห่างบรรทัด */
+    font-size: 16px;
+}
+
+.register-container a {
+    color: #00BCD4; /* สีฟ้าอมเขียวสำหรับลิงก์ */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.register-container a:hover {
+    color: #00A3B2;
+    text-decoration: underline;
+}
+
+/* สไตล์สำหรับข้อความ User ID บนหน้า Home */
+.user-id-display {
+    color: #00BCD4; /* สีฟ้าอมเขียว */
+    font-size: 18px;
+    margin-top: 20px;
+    font-weight: bold;
+    word-break: break-all; /* เพื่อให้ข้อความยาวๆ ขึ้นบรรทัดใหม่ */
+}
+
+/* สไตล์สำหรับคอนเทนเนอร์หน้า Home */
+.home-container {
+    background-color: #1A1E27; /* สีพื้นหลังเดียวกับ navbar */
+    padding: 45px 55px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    width: 450px;
+    max-width: 92%;
+    border: 2px solid #00BCD4;
+    animation: fadeIn 0.8s ease-out;
+    margin-top: 120px; /* เพิ่มระยะห่างจาก Navbar */
+}
+
+.home-container h2 {
+    color: #E0EEF0; /* สีข้อความขาวอมฟ้า */
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+.home-container p {
+    color: #AAB7C4; /* สีข้อความเทาอมฟ้า */
+    font-size: 16px;
+    margin: 15px 0;
+}
+
+.home-container a {
+    color: #00BCD4; /* สีลิงก์ฟ้าอมเขียว */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.home-container a:hover {
+    color: #00A3B2; /* สีเข้มขึ้นเมื่อโฮเวอร์ */
+    text-decoration: underline;
+}
+
+/* Landing Page Styles */
+.landing-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    margin-top: 60px;
+}
+.landing-title {
+    color: #00BCD4;
+    font-size: 56px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+    margin-top: 60px;
+    text-align: center;
+}
+.landing-desc {
+    color: #e0e0e0;
+    font-size: 20px;
+    margin-bottom: 40px;
+    text-align: center;
+    max-width: 600px;
+}
+.landing-footer {
+    width: 100%;
+    text-align: center;
+    color: #AAB7C4;
+    font-size: 15px;
+    margin-top: 60px;
+    margin-bottom: 20px;
+}
+
+/* Dashboard iframe style */
+.dashboard-iframe {
+    width: 100%;
+    min-height: 80vh;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px 0 rgba(0,188,212,0.10);
+    margin-top: 32px;
+}
+.dashboard-github-link {
+    display: inline-block;
+    margin: 24px 0 0 0;
+    padding: 10px 28px;
+    background: #24292f;
+    color: #fff;
+    border-radius: 24px;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 2px 8px 0 rgba(0,188,212,0.10);
+}
+.dashboard-github-link:hover {
+    background: #00BCD4;
+    color: #151c25;
+}
+
+/* --- Navbar Language Button & Dropdown --- */
+.navbar-btn-lang {
+    background: #00BCD4;
+    color: #10151c;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 24px;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px 0 rgba(0,188,212,0.10);
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+}
+.navbar-btn-lang:hover, .navbar-btn-lang:focus {
+    background: #0097A7;
+    color: #fff;
+}
+
+.navbar-lang-dropdown {
+    display: none;
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background: #23262b;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px 0 rgba(0,188,212,0.10);
+    min-width: 140px;
+    z-index: 2000;
+    border: 1.5px solid #00BCD4;
+    padding: 6px 0;
+}
+.navbar-lang-dropdown.show {
+    display: block;
+}
+.navbar-lang-option {
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    text-align: left;
+    background: none;
+    border: none;
+    width: 100%;
+    outline: none;
+}
+.navbar-lang-option:hover, .navbar-lang-option.active {
+    background: #00BCD4;
+    color: #10151c;
+}
+
+/* --- Navbar Language Select Modern (Transparent, Blue Border, Input-like, Clean) --- */
+.navbar-lang-select {
+    background: transparent;
+    color: #00BCD4;
+    border: 2px solid #00BCD4;
+    border-radius: 12px;
+    padding: 10px 44px 10px 16px; /* More right padding for arrow */
+    font-size: 16px;
+    font-weight: 500;
+    min-width: 140px;
+    max-width: 200px;
+    box-shadow: 0 2px 8px 0 rgba(0,188,212,0.08);
+    outline: none;
+    position: relative;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin-right: 10px;
+    transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s;
+    z-index: 1;
+    line-height: 1.2;
+    text-align: left;
+    background-clip: padding-box;
+    vertical-align: middle;
+}
+.navbar-lang-select:focus, .navbar-lang-select:hover {
+    background: rgba(0,188,212,0.06);
+    color: #00BCD4;
+    border: 2px solid #00BCD4;
+    box-shadow: 0 4px 16px 0 rgba(0,188,212,0.12);
+}
+.navbar-lang-select option {
+    color: #23262b;
+    background: #fff;
+    font-weight: 500;
+}
+.navbar-lang-select-arrow {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 22px;
+    color: #00BCD4;
+    z-index: 2;
+    background: transparent;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.navbar-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+@media (max-width: 600px) {
+    .navbar-lang-select {
+        min-width: 80px;
+        font-size: 14px;
+        padding: 7px 32px 7px 10px;
+        max-width: 120px;
+    }
+    .navbar-lang-select-arrow {
+        right: 8px;
+        font-size: 16px;
+    }
+}

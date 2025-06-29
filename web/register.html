@@ -1,0 +1,60 @@
+<!-- register_v2.html: หน้าลงทะเบียนดีไซน์ใหม่พร้อม Navbar -->
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="registerPageTitle">หน้าลงทะเบียน</title>
+    <!-- เชื่อมโยงไฟล์ CSS สำหรับการจัดรูปแบบ -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-dark-blue-bg">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span class="navbar-title"><span style="color:#fff;">LOG</span><span style="color:#00BCD4;">GUARD</span></span>
+        </div>
+        <ul class="navbar-links">
+            <li><a href="home.html" data-lang-key="navHome">Home</a></li>
+            <li><a href="#" data-lang-key="navDashboard">Dashboard</a></li>
+            <li><a href="chat.html">Chat</a></li>
+            <li><a href="#">LogGuard</a></li>
+        </ul>
+        <div class="navbar-buttons">
+            <a href="index.html" class="navbar-btn-login">Log In</a>
+            <a href="register.html" class="navbar-btn-signup-transparent" data-lang-key="navSignUp">Sign Up</a>
+        </div>
+    </nav>
+
+    <!-- Register Container (ดีไซน์ใหม่) -->
+    <div class="register-container-v2">
+        <h2 class="create-account-title" data-lang-key="createAccountTitle">Create an Account 📝</h2>
+        <p class="signup-subtitle" data-lang-key="signupToGetStarted">Sign up to get started</p>
+        <form id="registerFormV2">
+            <div class="input-group-v2">
+                <label for="regEmailV2" data-lang-key="emailAddress">Email Address</label>
+                <input type="email" id="regEmailV2" placeholder="you@example.com" required>
+            </div>
+            <div class="input-group-v2">
+                <label for="regPasswordV2" data-lang-key="passwordLabel">Password</label>
+                <input type="password" id="regPasswordV2" placeholder="••••••••" required>
+            </div>
+            <div class="input-group-v2">
+                <label for="confirmPasswordV2" data-lang-key="confirmPasswordLabel">Confirm Password</label>
+                <input type="password" id="confirmPasswordV2" placeholder="••••••••" required>
+            </div>
+            <!-- ลบช่อง Address และ Phone Number ออกตามคำขอ -->
+            <button type="submit" class="register-btn-v2" data-lang-key="signUpButton">Sign Up</button>
+        </form>
+        <div class="already-account-group-v2">
+            <p data-lang-key="alreadyAccount">Already have an account?</p>
+            <a href="index.html" class="login-link-v2" data-lang-key="logInLink">Log In</a>
+        </div>
+    </div>
+
+    <!-- เชื่อมโยงไฟล์ JavaScript สำหรับการทำงานของภาษา -->
+    <script type="module" src="language.js"></script>
+    <!-- เชื่อมโยงไฟล์ JavaScript สำหรับการทำงานหลักของหน้า -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>

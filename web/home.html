@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anomaly Detection Dashboard | LOGGUARD</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            background: #f3eafe;
+            font-family: 'Inter', Arial, sans-serif;
+            color: #3d246c;
+        }
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            margin-top: 80px;
+            width: 100vw;
+            background: #f3eafe;
+        }
+        .sidebar {
+            width: 240px;
+            background: #5a189a;
+            color: #fff;
+            padding: 32px 0 0 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            box-shadow: 2px 0 16px 0 rgba(90,24,154,0.08);
+            border-right: 1.5px solid #a084e8;
+            position: fixed;
+            left: 0;
+            top: 80px;
+            height: calc(100vh - 80px);
+            z-index: 10;
+        }
+        .sidebar-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-left: 32px;
+            margin-bottom: 36px;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar-menu li {
+            margin-bottom: 8px;
+        }
+        .sidebar-menu a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 8px 0 0 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .sidebar-menu a.active, .sidebar-menu a:hover {
+            background: #a084e8;
+            color: #fff;
+        }
+        .main-content {
+            flex: 1;
+            padding: 36px 48px 36px 300px;
+            max-width: 1600px;
+            margin: 0 auto;
+            background: #f3eafe;
+        }
+        .dashboard-header {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: #3d246c;
+        }
+        .overview-cards {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .overview-card {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px 0 rgba(90,24,154,0.10);
+            padding: 24px 32px;
+            flex: 1;
+            min-width: 180px;
+        }
+        .overview-card-title {
+            font-size: 1.1rem;
+            color: #3d246c;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .overview-card-value {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #00BCD4;
+            letter-spacing: 1px;
+        }
+        .overview-card-critical {
+            color: #FF5252;
+            font-size: 2rem;
+            font-weight: 900;
+        }
+        .dashboard-graph {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px 0 rgba(90,24,154,0.10);
+            padding: 24px 32px 16px 32px;
+            margin-bottom: 32px;
+        }
+        .dashboard-graph-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #3d246c;
+            margin-bottom: 12px;
+        }
+        .dashboard-graph-canvas {
+            width: 100%;
+            max-width: 700px;
+            height: 180px;
+            margin: 0 auto;
+            display: block;
+            background: #f3eafe;
+            border-radius: 8px;
+        }
+        .recent-anomalies {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px 0 rgba(90,24,154,0.10);
+            padding: 24px 32px;
+        }
+        .recent-anomalies-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #3d246c;
+            margin-bottom: 18px;
+        }
+        .anomaly-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .anomaly-table th, .anomaly-table td {
+            padding: 10px 8px;
+            text-align: left;
+        }
+        .anomaly-table th {
+            background: #f3eafe;
+            color: #3d246c;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .anomaly-table tr {
+            border-bottom: 1px solid #a084e8;
+        }
+        .anomaly-table td {
+            color: #3d246c;
+            font-size: 1rem;
+        }
+        .anomaly-table td.low {
+            color: #00BCD4;
+            font-weight: 700;
+        }
+        @media (max-width: 900px) {
+            .dashboard-container { flex-direction: column; }
+            .sidebar { width: 100%; min-height: unset; flex-direction: row; padding: 0; position: static; height: auto; }
+            .sidebar-title { margin: 24px; }
+            .sidebar-menu { display: flex; flex-direction: row; gap: 0; }
+            .sidebar-menu a { border-radius: 8px 8px 0 0; padding: 12px 18px; }
+            .main-content { padding: 18px 12px 18px 12px; }
+            .overview-cards { flex-direction: column; gap: 12px; }
+        }
+    </style>
+</head>
+<body style="background: #23262b; min-height: 100vh; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span class="navbar-title"><span style="color:#fff;">LOG</span><span style="color:#00BCD4;">GUARD</span></span>
+        </div>
+        <ul class="navbar-links" style="margin: 0 auto;">
+            <li><a href="home.html" class="active">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="chat.html">Chat</a></li>
+            <li><a href="#">LogGuard</a></li>
+        </ul>
+        <div class="navbar-buttons">
+            <a href="index.html" class="navbar-btn-login">Log In</a>
+            <a href="register.html" class="navbar-btn-signup-transparent" data-lang-key="navSignUp">Sign Up</a>
+        </div>
+    </nav>
+    <main style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+        <h1 style="color:#00BCD4; font-size:3rem; font-weight:800; letter-spacing:2px; margin-bottom:24px;">LOG GUARD</h1>
+        <p style="color:#e0eef0; font-size:1.15rem; text-align:center; max-width:480px;">A smart layer of defense for your NGINX logs. Stop threats before they spread.</p>
+    </main>
+    <footer style="color:#b0b8c1; font-size:0.95rem; text-align:center; margin-bottom:18px; width:100%;">
+        &copy; 2025 Log Guard. All rights reserved.
+    </footer>
+    <script type="module" src="script.js"></script>
+    <script type="module">
+    import { renderNavbarButtons } from './script.js';
+    document.addEventListener('DOMContentLoaded', renderNavbarButtons);
+    </script>
+</body>
+</html> 
