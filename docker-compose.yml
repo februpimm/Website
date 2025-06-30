@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  logguard-website:
+    build: .
+    container_name: logguard-website
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+      - HOST=0.0.0.0
+      - DOMAIN=${DOMAIN:-yourdomain.com}
+    volumes:
+      - ./logs:/app/logs
+      - ./users.json:/app/users.json
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - logguard-network
+
+  # Optional: Nginx reverse proxy for SSL termination
+  nginx:
+    image: nginx:alpine
+    container_name: logguard-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - logguard-website
+    restart: unless-stopped
+    networks:
+      - logguard-network
+    profiles:
+      - proxy
+
+networks:
+  logguard-network:
+    driver: bridge 

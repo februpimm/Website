@@ -18,8 +18,7 @@
             <li><a href="#">LogGuard</a></li>
         </ul>
         <div class="navbar-buttons">
-            <a href="index.html" class="navbar-btn-login">Log In</a>
-            <a href="register.html" class="navbar-btn-signup-transparent" data-lang-key="navSignUp">Sign Up</a>
+            <!-- ปุ่มจะถูกสร้างโดย JavaScript -->
         </div>
     </nav>
 
@@ -45,5 +44,30 @@
 
     <script type="module" src="language.js"></script>
     <script type="module" src="script.js"></script>
+    <script type="module">
+    import { renderNavbarButtons } from './script.js';
+    document.addEventListener('DOMContentLoaded', renderNavbarButtons);
+    </script>
+    <script>
+    document.getElementById('loginFormV2').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const email = document.getElementById('emailV2').value;
+        const password = document.getElementById('passwordV2').value;
+        const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            localStorage.setItem('loggedInUserEmail', email);
+            localStorage.setItem('authToken', data.token || '');
+            alert('Login successful! Redirecting to home page...');
+            window.location.href = 'home.html';
+        } else {
+            alert(data.message || 'Login failed');
+        }
+    });
+    </script>
 </body>
 </html>

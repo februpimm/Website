@@ -333,10 +333,7 @@
             <li><a href="chat.html">Chat</a></li>
             <li><a href="#">LogGuard</a></li>
         </ul>
-        <div class="navbar-buttons">
-            <a href="index.html" class="navbar-btn-login">Log In</a>
-            <a href="register.html" class="navbar-btn-signup-transparent" data-lang-key="navSignUp">Sign Up</a>
-        </div>
+        <div class="navbar-buttons"></div>
     </nav>
     <!-- /Navbar -->
     <div class="dashboard-container">
@@ -351,6 +348,7 @@
             </ul>
         </nav>
         <main class="main-content">
+            <div id="dashboard-logguard-card"></div>
             <div class="dashboard-header">Dashboard Overview</div>
             <div class="overview-cards">
                 <div class="overview-card">
@@ -470,9 +468,35 @@
         });
     });
     </script>
+    <script type="module" src="script.js"></script>
     <script type="module">
     import { renderNavbarButtons } from './script.js';
     document.addEventListener('DOMContentLoaded', renderNavbarButtons);
+    document.addEventListener('DOMContentLoaded', () => {
+        const loggedIn = localStorage.getItem('loggedInUserEmail');
+        if (loggedIn) {
+            const card = document.createElement('div');
+            card.style.background = 'linear-gradient(90deg, #e0f7fa 60%, #b2ebf2 100%)';
+            card.style.boxShadow = '0 6px 32px 0 rgba(0,188,212,0.13)';
+            card.style.borderRadius = '26px';
+            card.style.padding = '38px 56px 30px 56px';
+            card.style.minWidth = '340px';
+            card.style.maxWidth = '520px';
+            card.style.display = 'flex';
+            card.style.flexDirection = 'column';
+            card.style.alignItems = 'flex-end';
+            card.style.gap = '10px';
+            card.style.margin = '0 0 36px auto';
+            card.innerHTML = `
+                <div style="display:flex;align-items:center;gap:18px;">
+                    <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f6e1.svg' alt='shield' style='width:48px;height:48px;vertical-align:middle;'>
+                    <span style="font-size:2.3rem;font-weight:900;color:#10151c;letter-spacing:2px;text-shadow:0 2px 8px rgba(0,188,212,0.10);">LOG <span style='color:#00BCD4;'>GUARD</span></span>
+                </div>
+            `;
+            const target = document.getElementById('dashboard-logguard-card');
+            if (target) target.appendChild(card);
+        }
+    });
     </script>
 </body>
 </html> 

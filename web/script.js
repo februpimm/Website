@@ -132,20 +132,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Handle Login form submission (for new login page - index.html)
     if (loginFormV2) {
         loginFormV2.addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevent default form submission
+            event.preventDefault();
             const email = document.getElementById('emailV2').value;
             const password = document.getElementById('passwordV2').value;
-
-            const users = getStoredUsers();
-            const foundUser = users.find(user => user.email === email && user.password === password);
-
-            if (foundUser) {
-                // Simulate successful login
-                alert(translations[currentLang]?.loginSuccess || "Login successful! Redirecting to home page...");
-                localStorage.setItem('loggedInUserEmail', email); // Store logged-in status
-                window.location.href = 'home.html'; // Redirect to home page
-            } else {
-                alert(translations[currentLang]?.loginFailed || "Invalid email or password.");
+            console.log('Submitting login:', email);
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+                console.log('Login response:', res.status, data);
+                if (res.ok) {
+                    localStorage.setItem('loggedInUserEmail', email);
+                    localStorage.setItem('authToken', data.token || '');
+                    window.location.href = 'home.html';
+                } else {
+                    alert(data.message || 'Login failed');
+                }
+            } catch (err) {
+                alert('Network error. Please try again.');
+                console.error('Login fetch error:', err);
             }
         });
     }
@@ -207,52 +215,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.location.href = 'index.html'; // Redirect back to login page
         });
     }
-
-    // Check if user is logged in on home page (simple check for demonstration)
-    const loggedInUserEmail = localStorage.getItem('loggedInUserEmail');
-    const homeContainer = document.querySelector('.home-container');
-    if (homeContainer && loggedInUserEmail) {
-        const userIdDisplayElement = document.getElementById('userIdDisplay');
-        if (userIdDisplayElement) {
-            // Display a simplified "User ID" (using email for this basic simulation)
-            userIdDisplayElement.textContent = `${translations[currentLang]?.loggedInAs || "Logged in as:"} ${loggedInUserEmail}`;
-        }
-    } else if (homeContainer && !loggedInUserEmail) {
-        // If on home page but not logged in, redirect to login
-        // This is a basic check; a real app would have more robust routing/auth guards
-        window.location.href = 'index.html'; // Redirect to login page
-    }
 });
 
 // Universal Navbar Button Renderer
 export function renderNavbarButtons() {
-    const navbarButtons = document.querySelector('.navbar-buttons') || document.getElementById('navbarButtons');
+    const navbarButtons = document.querySelector('.navbar-buttons');
     if (!navbarButtons) return;
     navbarButtons.innerHTML = '';
     const loggedInUserEmail = localStorage.getItem('loggedInUserEmail');
     if (loggedInUserEmail) {
-        // ถ้าล็อกอินแล้ว แสดงปุ่ม Log Out
         const logoutBtn = document.createElement('a');
         logoutBtn.textContent = 'Log Out';
         logoutBtn.className = 'navbar-btn-login';
         logoutBtn.style.cursor = 'pointer';
         logoutBtn.onclick = function() {
             localStorage.removeItem('loggedInUserEmail');
-            window.location.href = 'index.html';
+            localStorage.removeItem('authToken');
+            window.location.href = 'home.html';
         };
         navbarButtons.appendChild(logoutBtn);
-    } else {
-        // ถ้ายังไม่ล็อกอิน แสดงปุ่ม Log In/Sign Up
-        const loginBtn = document.createElement('a');
-        loginBtn.textContent = 'Log In';
-        loginBtn.className = 'navbar-btn-login';
-        loginBtn.href = 'index.html';
-        const signupBtn = document.createElement('a');
-        signupBtn.textContent = 'Sign Up';
-        signupBtn.className = 'navbar-btn-signup-transparent';
-        signupBtn.href = 'register.html';
-        navbarButtons.appendChild(loginBtn);
-        navbarButtons.appendChild(signupBtn);
     }
 }
 

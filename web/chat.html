@@ -3,127 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot | LOGGUARD</title>
+    <title>LOGGUARD Chatbot</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="LogLens/Chatbot/public/style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
     <style>
         body {
-            background: #23262b;
+            margin: 0;
+            background: linear-gradient(135deg, #181d23 0%, #23262b 100%);
             min-height: 100vh;
             font-family: 'Inter', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            color: #e0eef0;
         }
-        .chatbot-page-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            width: 100vw;
-            min-height: 100vh;
-            background: none;
-            margin: 0;
-            padding: 0;
-        }
-        @media (max-width: 600px) {
-            body { 
-                padding: 10px; 
-            }
-        }
-        #chatbot-toggler { display: none !important; }
-        .chatbot-popup {
-            margin: 90px auto 32px auto;
-            box-shadow: 0 8px 40px 0 rgba(0,188,212,0.18), 0 1.5px 0 0 #00BCD4;
-            background: #10151c;
-            border: 2.5px solid #00BCD4;
-            min-height: 70vh;
-            max-width: 480px;
+        .navbar {
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            border-radius: 24px;
-            overflow: hidden;
-            transition: box-shadow 0.3s, border 0.3s;
-        }
-        @media (max-width: 900px) {
-            .chatbot-popup {
-                max-width: 98vw;
-                min-height: 80vh;
-                border-radius: 0;
-                margin: 70px 0 0 0;
-            }
-        }
-        .chat-header {
-            background: linear-gradient(90deg, #00BCD4 0%, #10151c 100%);
-            padding: 28px 36px 20px 36px;
-            min-height: 80px;
+            background: rgba(24,29,35,0.98);
+            box-shadow: 0 4px 24px 0 rgba(0,188,212,0.10), 0 1.5px 0 0 #00BCD4;
+            border-bottom: 2.5px solid #00BCD4;
+            padding: 0 48px;
+            min-height: 70px;
             display: flex;
             align-items: center;
-            gap: 18px;
-            border-radius: 0 0 24px 24px;
-            box-shadow: 0 2px 16px 0 rgba(0,188,212,0.10);
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
         }
-        .chat-header .logo-text {
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            height: 70px;
+        }
+        .navbar-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
             color: #fff;
+            user-select: none;
+            text-shadow: 0 2px 8px rgba(0,188,212,0.10);
+        }
+        .navbar-title span {
+            color: #00BCD4;
+        }
+        .navbar-links {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+            margin: 0 auto;
+            padding: 0;
+        }
+        .navbar-links a {
+            color: #e0eef0;
+            text-decoration: none;
+            font-size: 1.15rem;
+            font-weight: 600;
+            transition: color 0.2s;
+            letter-spacing: 0.2px;
+        }
+        .navbar-links a:hover, .navbar-links a.active {
+            color: #00BCD4;
+        }
+        .chatbot-main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            min-height: 100vh;
+            padding-top: 90px;
+            padding-bottom: 0;
+        }
+        .chatbot-container {
+            width: 100%;
+            max-width: 700px;
+            min-height: 70vh;
+            background: rgba(24,29,35,0.98);
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 8px 40px 0 rgba(0,188,212,0.10);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+        }
+        .chatbot-header {
+            background: linear-gradient(90deg, #00BCD4 60%, #0097A7 100%);
+            padding: 24px 32px 16px 32px;
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 2px 12px 0 rgba(0,188,212,0.10);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .chatbot-header .chatbot-title {
             font-size: 1.5rem;
             font-weight: 900;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            color: #fff;
+            margin: 0 0 4px 0;
         }
-        .chat-header .chatbot-logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #fff;
-            padding: 6px;
+        .chatbot-header .chatbot-desc {
+            color: #e0eef0;
+            font-size: 1rem;
+            opacity: 0.85;
         }
         .chat-body {
-            background: transparent;
             flex: 1 1 auto;
-            min-height: 300px;
-            padding: 28px 24px 18px 24px;
+            padding: 32px 24px 16px 24px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 18px;
+            background: none;
+            min-height: 300px;
+            justify-content: flex-end;
         }
-        .chat-body .bot-message .message-text {
-            background: #fff;
-            color: #10151c;
-            align-self: flex-start;
-            border-radius: 16px 16px 16px 6px;
-            padding: 14px 18px;
-            font-size: 1.08rem;
-            font-weight: 500;
-            box-shadow: 0 2px 8px rgba(0,188,212,0.07);
-            margin-bottom: 2px;
-            max-width: 80%;
+        .chat-body-inner {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
         }
-        .chat-body .user-message .message-text {
-            background: linear-gradient(90deg, #00BCD4 60%, #0097A7 100%);
-            color: #fff;
-            align-self: flex-end;
-            border-radius: 16px 16px 6px 16px;
+        .message {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            animation: fadeInMsg 0.5s;
+        }
+        @keyframes fadeInMsg {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .user-message {
+            align-items: flex-end;
+        }
+        .message-text {
             padding: 14px 18px;
+            border-radius: 18px 18px 6px 18px;
             font-size: 1.08rem;
             font-weight: 500;
             box-shadow: 0 2px 8px rgba(0,188,212,0.10);
             margin-bottom: 2px;
             max-width: 80%;
+            word-break: break-word;
         }
-        .chat-body .meta {
-            font-size: 0.85rem;
-            color: #b0b8c1;
-            margin: 0 0 0 4px;
+        .bot-message .message-text {
+            background: rgba(255,255,255,0.95);
+            color: #10151c;
+            border-radius: 18px 18px 18px 6px;
+        }
+        .user-message .message-text {
+            background: linear-gradient(90deg, #00BCD4 60%, #0097A7 100%);
+            color: #fff;
+            border-radius: 18px 18px 6px 18px;
         }
         .chat-footer {
-            background: #10151c;
-            padding: 18px 24px 18px 24px;
-            position: sticky;
-            bottom: 0;
-            z-index: 2;
+            background: rgba(16,21,28,0.98);
+            padding: 18px 0 18px 0;
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 -2px 12px 0 rgba(0,188,212,0.10);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .chat-footer-inner {
+            max-width: 700px;
+            width: 100%;
+            display: flex;
+            align-items: center;
         }
         .chat-form {
-            background: #fff;
+            background: rgba(255,255,255,0.95);
             border-radius: 24px;
             box-shadow: 0 2px 12px rgba(0,188,212,0.10);
             outline: none;
@@ -132,6 +181,7 @@
             gap: 10px;
             padding: 8px 16px 8px 20px;
             border: 2px solid #00BCD4;
+            width: 100%;
         }
         .chat-form .message-input {
             font-size: 1rem;
@@ -149,28 +199,93 @@
         .chat-form .message-input::placeholder {
             color: #b0b8c1;
         }
-        .chat-form .chat-controls button {
-            color: #00BCD4;
-            background: none;
-            font-size: 1.3rem;
-            border: none;
-            outline: none;
-            border-radius: 50%;
-            transition: background 0.2s;
-            padding: 8px;
-            cursor: pointer;
+        .chat-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.13);
+            border-radius: 32px;
+            box-shadow: 0 8px 32px 0 rgba(0,188,212,0.13);
+            padding: 8px 18px;
+            backdrop-filter: blur(8px);
         }
-        .chat-form .chat-controls #send-message {
+        .chat-controls button {
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.18);
+            border: 2.5px solid #00BCD4;
+            color: #00BCD4;
+            font-size: 1.7rem;
+            box-shadow: 0 6px 24px 0 rgba(0,188,212,0.13);
+            transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.18s;
+            cursor: pointer;
+            outline: none;
+            position: relative;
+            margin: 0 2px;
+            backdrop-filter: blur(2px);
+        }
+        .chat-controls button:hover, .chat-controls button:focus {
+            background: linear-gradient(135deg, #00BCD4 60%, #0097A7 100%);
+            color: #fff;
+            border-color: #00BCD4;
+            box-shadow: 0 12px 36px 0 rgba(0,188,212,0.22);
+            transform: translateY(-4px) scale(1.13);
+        }
+        .chat-controls button:active {
+            background: linear-gradient(135deg, #0097A7 60%, #00BCD4 100%);
+            color: #fff;
+            border-color: #0097A7;
+            box-shadow: 0 2px 8px 0 rgba(0,188,212,0.18);
+            transform: scale(0.97);
+        }
+        .chat-controls #send-message {
             background: linear-gradient(90deg, #00BCD4 60%, #0097A7 100%);
             color: #fff;
-            border-radius: 50%;
-            padding: 10px 14px;
-            box-shadow: 0 2px 8px rgba(0,188,212,0.15);
-            transition: background 0.2s;
+            font-size: 2.1rem;
+            font-weight: bold;
+            border: 2.5px solid #00BCD4;
+            box-shadow: 0 12px 36px 0 rgba(0,188,212,0.28);
+            transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
         }
-        .chat-form .chat-controls #send-message:hover {
-            background: #0097A7;
+        .chat-controls #send-message:hover, .chat-controls #send-message:focus {
+            background: linear-gradient(90deg, #0097A7 60%, #00BCD4 100%);
             color: #fff;
+            border-color: #0097A7;
+            box-shadow: 0 18px 48px 0 rgba(0,188,212,0.32);
+            transform: translateY(-6px) scale(1.16);
+        }
+        .chat-controls #send-message:active {
+            background: linear-gradient(90deg, #00BCD4 60%, #0097A7 100%);
+            color: #fff;
+            border-color: #00BCD4;
+            box-shadow: 0 2px 8px 0 rgba(0,188,212,0.18);
+            transform: scale(0.97);
+        }
+        .file-upload-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        .file-upload-wrapper button {
+            margin-left: 0;
+        }
+        @media (max-width: 900px) {
+            .chatbot-container, .chat-footer-inner { max-width: 98vw; }
+            .chatbot-header { padding: 18px 8px 8px 8px; }
+        }
+        @media (max-width: 600px) {
+            .navbar { padding: 0 10px; min-height: 54px; }
+            .navbar-title { font-size: 20px; }
+            .navbar-links a { font-size: 15px; }
+            .navbar-brand { height: 54px; }
+            .chatbot-header { padding: 12px 6px 6px 6px; }
+            .chatbot-container { border-radius: 0; }
+            .chat-footer { border-radius: 0; }
         }
     </style>
 </head>
@@ -185,58 +300,67 @@
             <li><a href="chat.html" class="active">Chat</a></li>
             <li><a href="#">LogGuard</a></li>
         </ul>
-        <div class="navbar-buttons">
-            <a href="index.html" class="navbar-btn-login">Log In</a>
-            <a href="register.html" class="navbar-btn-signup-transparent" data-lang-key="navSignUp">Sign Up</a>
-        </div>
+        <div class="navbar-buttons"></div>
     </nav>
-    <div class="chatbot-page-container">
-        <div class="chatbot-popup">
-            <div class="chat-header">
-                <div class="header-info">
-                    <svg class="chatbot-logo" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 1024 1024">
-                        <path d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 51.9-51.9s51.9 23.3 51.9 51.9z"></path>
-                    </svg>
-                    <h2 class="logo-text">Chatbot</h2>
+    <main class="chatbot-main">
+        <div id="chat-logguard-card"></div>
+        <section class="chatbot-container">
+            <div class="chatbot-header">
+                <div class="chatbot-title">CHATBOT</div>
+                <div class="chatbot-desc">AI Assistant for your log security</div>
+            </div>
+            <div class="chat-body"><div class="chat-body-inner"></div></div>
+            <div class="chat-footer">
+                <div class="chat-footer-inner">
+                    <form action="#" class="chat-form">
+                        <textarea placeholder="Message..." class="message-input" required></textarea>
+                        <div class="chat-controls">
+                            <button type="button" id="emoji-picker" title="Emoji" aria-label="Emoji">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#fff"/><path d="M8.5 10.5C8.5 11.0523 8.05228 11.5 7.5 11.5C6.94772 11.5 6.5 11.0523 6.5 10.5C6.5 9.94772 6.94772 9.5 7.5 9.5C8.05228 9.5 8.5 9.94772 8.5 10.5ZM17.5 10.5C17.5 11.0523 17.0523 11.5 16.5 11.5C15.9477 11.5 15.5 11.0523 15.5 10.5C15.5 9.94772 15.9477 9.5 16.5 9.5C17.0523 9.5 17.5 9.94772 17.5 10.5ZM12 18C14.2091 18 16 16.2091 16 14H8C8 16.2091 9.79086 18 12 18Z" fill="#00BCD4"/></svg>
+                            </button>
+                            <div class="file-upload-wrapper">
+                                <input type="file" accept="images/*" id="file-input" hidden>
+                                <button type="button" id="file-upload" title="Attach file" aria-label="Attach file">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.657 11.657l-6.364 6.364a4 4 0 01-5.657-5.657l8.485-8.485a2 2 0 112.828 2.828l-9.192 9.192a.5.5 0 01-.707-.707l9.192-9.192" stroke="#00BCD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
+                                <button type="button" id="file-cancel" title="Cancel file" aria-label="Cancel file">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#fff"/><path d="M15 9L9 15M9 9l6 6" stroke="#00BCD4" stroke-width="2" stroke-linecap="round"/></svg>
+                                </button>
+                            </div>
+                            <button type="button" id="voice-input-button" title="Voice input" aria-label="Voice input">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="2" width="6" height="12" rx="3" fill="#00BCD4"/><path d="M5 10v2a7 7 0 0014 0v-2" stroke="#00BCD4" stroke-width="2" stroke-linecap="round"/><path d="M12 22v-2" stroke="#00BCD4" stroke-width="2" stroke-linecap="round"/></svg>
+                            </button>
+                            <button type="button" id="send-message" title="Send" aria-label="Send">
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 20l18-8-18-8v6l15 2-15 2v6z" fill="#fff"/></svg>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="chat-body"></div>
-            <div class="chat-footer">
-                <form action="#" class="chat-form">
-                    <textarea placeholder="Message..." class="message-input" required></textarea>
-                    <div class="chat-controls">
-                        <button type="button" id="emoji-picker" class="material-symbols-outlined">sentiment_satisfied</button>
-                        <div class="file-upload-wrapper">
-                            <input type="file" accept="images/*" id="file-input" hidden>
-                            <img src="#">
-                            <button type="button" id="file-upload" class="material-symbols-rounded">attach_file</button>
-                            <button type="button" id="file-cancel" class="material-symbols-rounded">close</button>
-                        </div>
-                        <button type="button" id="voice-input-button" class="material-symbols-rounded">mic</button>
-                        <button type="button" class="material-symbols-rounded" id="send-message">arrow_upward</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
+        </section>
+    </main>
+    <script type="module" src="script.js"></script>
+    <script type="module">
+    import { renderNavbarButtons } from './script.js';
+    document.addEventListener('DOMContentLoaded', renderNavbarButtons);
+    </script>
     <script>
-    const chatBody = document.querySelector('.chat-body');
+    const chatBodyInner = document.querySelector('.chat-body-inner');
     const messageInput = document.querySelector('.message-input');
     const sendMessageButton = document.getElementById('send-message');
     function addMessage(text, sender = 'user') {
         const div = document.createElement('div');
         div.className = `message ${sender}-message`;
         div.innerHTML = `<div class="message-text">${text}</div>`;
-        chatBody.appendChild(div);
-        chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
+        chatBodyInner.appendChild(div);
+        chatBodyInner.scrollTo({ top: chatBodyInner.scrollHeight, behavior: "smooth" });
     }
     function showWelcome() {
-        if (chatBody && chatBody.children.length === 0) {
+        if (chatBodyInner && chatBodyInner.children.length === 0) {
             addMessage('<strong>🤖 ยินดีต้อนรับสู่ LOGGUARD AI Assistant</strong><br><em>💬 พิมพ์ข้อความของคุณด้านล่างเพื่อเริ่มต้นการสนทนา</em>', 'bot');
         }
     }
-    showWelcome(); // เรียกทันที
+    showWelcome();
     sendMessageButton.addEventListener('click', function() {
         const text = messageInput.value.trim();
         if (!text) return;
@@ -253,8 +377,33 @@
         }
     });
     </script>
-    
-    <!-- Setup Instructions -->
+    <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+        const loggedIn = localStorage.getItem('loggedInUserEmail');
+        if (loggedIn) {
+            const card = document.createElement('div');
+            card.style.background = 'linear-gradient(90deg, #e0f7fa 60%, #b2ebf2 100%)';
+            card.style.boxShadow = '0 6px 32px 0 rgba(0,188,212,0.13)';
+            card.style.borderRadius = '26px';
+            card.style.padding = '38px 56px 30px 56px';
+            card.style.minWidth = '340px';
+            card.style.maxWidth = '520px';
+            card.style.display = 'flex';
+            card.style.flexDirection = 'column';
+            card.style.alignItems = 'flex-end';
+            card.style.gap = '10px';
+            card.style.margin = '0 0 36px auto';
+            card.innerHTML = `
+                <div style="display:flex;align-items:center;gap:18px;">
+                    <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f6e1.svg' alt='shield' style='width:48px;height:48px;vertical-align:middle;'>
+                    <span style="font-size:2.3rem;font-weight:900;color:#10151c;letter-spacing:2px;text-shadow:0 2px 8px rgba(0,188,212,0.10);">LOG <span style='color:#00BCD4;'>GUARD</span></span>
+                </div>
+            `;
+            const target = document.getElementById('chat-logguard-card');
+            if (target) target.appendChild(card);
+        }
+    });
+    </script>
     <div style="position: fixed; bottom: 10px; left: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 8px; font-size: 12px; max-width: 300px; z-index: 1000;">
         <strong>💡 การตั้งค่า Chatbot:</strong><br>
         1. ติดตั้ง dependencies: <code>pip install -r requirements.txt</code><br>

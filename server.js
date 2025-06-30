@@ -1,14 +1,34 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors'); // ตรวจสอบว่ามีการเรียกใช้ module 'cors' อย่างถูกต้อง
+const cors = require('cors');
 const path = require('path');
-const fs = require('fs'); // เพิ่ม module สำหรับ File System
+const fs = require('fs');
+const helmet = require('helmet'); // เพิ่ม security headers
 
 const app = express();
-const port = 8000; // หรือพอร์ตที่คุณต้องการ หากเปลี่ยนเป็น 8000 ต้องอัปเดต URL ใน main.js ด้วย (ในตัวอย่างจะใช้ 3000)
+
+// Environment variables สำหรับ deployment
+const PORT = process.env.PORT || 8000;
+const HOST = process.env.HOST || '0.0.0.0';
+const DOMAIN = process.env.DOMAIN || 'yourdomain.com'; // เปลี่ยนเป็น domain ของคุณ
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Path ไปยังไฟล์ users.json
 const USERS_FILE = path.join(__dirname, 'users.json');
+
+// Security middleware
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net"],
+            imgSrc: ["'self'", "data:", "https:", "https://cdn.jsdelivr.net"],
+            connectSrc: ["'self'"]
+        }
+    }
+}));
 
 // Helper function เพื่ออ่านข้อมูลผู้ใช้จากไฟล์ users.json
 const readUsers = () => {
@@ -16,7 +36,6 @@ const readUsers = () => {
         const data = fs.readFileSync(USERS_FILE, 'utf8');
         return JSON.parse(data);
     } catch (error) {
-        // ถ้าไฟล์ไม่มีอยู่ หรือมีปัญหาในการอ่าน/parse ก็คืนค่า array เปล่า
         console.error('Error reading users file, initializing as empty array:', error.message);
         return [];
     }
@@ -30,31 +49,81 @@ const writeUsers = (users) => {
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
 
-// กำหนดให้ Express Serve ไฟล์ Static (CSS, JS, รูปภาพ ฯลฯ) จากโฟลเดอร์ 'web'
-// นี่คือส่วนสำคัญที่แก้ไขปัญหา ENOENT และการโหลดไฟล์ CSS/JS ไม่เจอ
+// CORS configuration สำหรับ production
+const corsOptions = {
+    origin: NODE_ENV === 'production' 
+        ? [
+            `https://${DOMAIN}`,
+            `https://www.${DOMAIN}`,
+            `http://${DOMAIN}`,
+            `http://www.${DOMAIN}`
+          ]
+        : true,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
+app.use(cors(corsOptions));
+
+// Trust proxy สำหรับ production (ถ้าใช้ reverse proxy)
+if (NODE_ENV === 'production') {
+    app.set('trust proxy', 1);
+}
+
+// กำหนดให้ Express Serve ไฟล์ Static
 app.use(express.static(path.join(__dirname, 'web')));
 
-// สำหรับทุกๆ Request ที่เข้ามาที่ root URL ('/') ให้ส่งไฟล์ login.html กลับไป
-// นี่คือส่วนสำคัญที่แก้ไขปัญหา Cannot GET /
+// Route สำหรับ root URL
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'web', 'login.html'));
+    res.sendFile(path.join(__dirname, 'web', 'standalone.html'));
 });
 
-// ********** API Endpoints สำหรับ Login และ Register **********
+// Route สำหรับ standalone page
+app.get('/standalone', (req, res) => {
+    res.sendFile(path.join(__dirname, 'web', 'standalone.html'));
+});
+
+// Route สำหรับ dashboard
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'web', 'dashboard.html'));
+});
+
+// Route สำหรับ chat
+app.get('/chat', (req, res) => {
+    res.sendFile(path.join(__dirname, 'web', 'chat.html'));
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({ 
+        status: 'OK', 
+        timestamp: new Date().toISOString(),
+        environment: NODE_ENV,
+        domain: DOMAIN
+    });
+});
+
+// ********** API Endpoints **********
 
 // API สำหรับ Login
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
-    console.log(`Login attempt for email: ${email}`);
+    console.log(`[API] Login attempt for email: ${email}`);
 
-    const users = readUsers(); // อ่านข้อมูลผู้ใช้จาก users.json
-    const user = users.find(u => u.email === email && u.password === password); // ตรวจสอบผู้ใช้
+    const users = readUsers();
+    const user = users.find(u => u.email === email && u.password === password);
 
     if (user) {
-        res.status(200).json({ message: "Login successful!", token: "dummy-jwt-token-abc123" });
+        console.log('[API] Login success for', email);
+        res.status(200).json({ 
+            message: "Login successful!", 
+            token: "dummy-jwt-token-abc123",
+            user: { email: user.email, username: user.username }
+        });
     } else {
+        console.log('[API] Login failed for', email);
         res.status(401).json({ message: "Invalid email or password." });
     }
 });
@@ -64,24 +133,76 @@ app.post('/api/register', (req, res) => {
     const { username, email, password } = req.body;
     console.log(`Registering new user: Username: ${username}, Email: ${email}`);
 
-    const users = readUsers(); // อ่านข้อมูลผู้ใช้จาก users.json
+    const users = readUsers();
 
     // ตรวจสอบว่าอีเมลซ้ำหรือไม่
     if (users.some(u => u.email === email)) {
-        return res.status(409).json({ message: "Email already registered." }); // 409 Conflict
+        return res.status(409).json({ message: "Email already registered." });
     }
 
-    const newUser = { username, email, password }; // ในโลกจริงต้อง Hash รหัสผ่านก่อนบันทึก
-    users.push(newUser); // เพิ่มผู้ใช้ใหม่
-    writeUsers(users); // บันทึกลงไฟล์ users.json
+    const newUser = { username, email, password };
+    users.push(newUser);
+    writeUsers(users);
 
     res.status(201).json({ message: "Registration successful!" });
 });
 
+// API สำหรับ dashboard data
+app.get('/api/dashboard-data', (req, res) => {
+    // Simulate dashboard data
+    const dashboardData = {
+        totalRequests: Math.floor(Math.random() * 5000) + 1000,
+        anomaliesDetected: Math.floor(Math.random() * 500) + 50,
+        warnings: Math.floor(Math.random() * 10) + 1,
+        systemHealth: Math.random() > 0.7 ? 'Critical' : 'Good',
+        recentAnomalies: [
+            {
+                time: new Date().toISOString(),
+                ip: '192.168.1.100',
+                request: '/api/data',
+                status: '200',
+                severity: 'Low'
+            }
+        ]
+    };
+    
+    res.json(dashboardData);
+});
+
 // ********** End API Endpoints **********
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Something went wrong!' });
+});
+
+// 404 handler
+app.use((req, res) => {
+    res.status(404).json({ message: 'Route not found' });
+});
+
 // Start server
-app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
-    console.log(`Open your browser at: http://localhost:${port}`);
+app.listen(PORT, HOST, () => {
+    console.log(`🚀 Server is running on ${HOST}:${PORT}`);
+    console.log(`🌍 Environment: ${NODE_ENV}`);
+    if (NODE_ENV === 'production') {
+        console.log(`🌐 Production server ready!`);
+        console.log(`🔗 Access your app at: https://${DOMAIN}`);
+    } else {
+        console.log(`🔧 Development server ready!`);
+        console.log(`📱 Local access: http://localhost:${PORT}`);
+        console.log(`🌐 Network access: http://${HOST}:${PORT}`);
+    }
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+    console.log('SIGTERM received, shutting down gracefully');
+    process.exit(0);
+});
+
+process.on('SIGINT', () => {
+    console.log('SIGINT received, shutting down gracefully');
+    process.exit(0);
 });
