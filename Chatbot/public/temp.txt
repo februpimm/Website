@@ -1,0 +1,97 @@
+// Send image from user to Chatbot AI (REMOVED as it's consolidated into handleOutgoingMessage)
+// const sendImageToChatbot = async (incomingMessageDiv) => { ... }
+
+// Send message from user to Chatbot AI (REMOVED as it's consolidated into handleOutgoingMessage)
+// const sendMessageToChatbot = async (incomingMessageDiv) => { ... }
+
+// Handle outgoing user messages
+
+//1/6/2025 temporary comment for block 2
+
+// const handleOutgoingMessage = (e) => {
+//     e.preventDefault();
+
+//     const textForThisMessage = messageInput.value.trim();
+//     const imageFileForThisMessage = fileInput.files[0]; // The actual File object for sending
+
+//     // Check if there's content to send for the user's own message bubble
+//     const hasTextForBubble = !!textForThisMessage;
+//     // userData.file.data has the base64 string if a file was selected and previewed
+//     const hasImagePreviewForBubble = userData.file && userData.file.data;
+
+//     if (!hasTextForBubble && !imageFileForThisMessage) {
+//         // Nothing to send, prevent further action.
+//         // UI should ideally prevent this (e.g., send button disabled).
+//         return;
+//     }
+    
+//     // 1. Construct and display the user's message bubble
+//     let outgoingMessageContent = "";
+//     if (hasTextForBubble) {
+//         outgoingMessageContent += `<div class="message-text"></div>`;
+//     }
+//     if (hasImagePreviewForBubble) { // Using preview data for display in user's bubble
+//         outgoingMessageContent += `<img src="data:${userData.file.mime_type};base64,${userData.file.data}" class="attachment" />`;
+//     }
+
+//     const outgoingMessageDiv = createMessageElement(outgoingMessageContent, "user-message");
+//     if (hasTextForBubble) {
+//         outgoingMessageDiv.querySelector(".message-text").textContent = textForThisMessage;
+//     }
+//     chatBody.appendChild(outgoingMessageDiv);
+//     chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
+
+//     // 2. Clear inputs and temporary states *after* capturing their values for this message
+//     //    and displaying the user's bubble. This prepares for the *next* message.
+//     messageInput.value = ""; // Clear text input field
+//     fileInput.value = "";    // IMPORTANT: Clears the selected file in the <input type="file">
+
+//     // Clear userData state that was used for the preview in the message just sent/displayed
+//     userData.file = { data: null, mime_type: null }; // Clear the file preview state
+    
+//     // Reset UI for file upload preview for the next message
+//     fileUploadWrapper.classList.remove("file-uploaded");
+//     const previewImg = fileUploadWrapper.querySelector("img");
+//     if (previewImg) {
+//         previewImg.src = "#"; // Or a placeholder for no image
+//     }
+//     messageInput.dispatchEvent(new Event("input")); // Trigger input event to resize textarea if necessary
+
+//     // 3. Send to backend and handle bot's response
+//     setTimeout(() => {
+//         const botAvatarAndThinkingIndicator = `<svg class="bot-avatar" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024"><path d="M738.3 287.6H285.7c-59 0-106.8 47.8-106.8 106.8v303.1c0 59 47.8 106.8 106.8 106.8h81.5v111.1c0 .7.8 1.1 1.4.7l166.9-110.6 41.8-.8h117.4l43.6-.4c59 0 106.8-47.8 106.8-106.8V394.5c0-59-47.8-106.9-106.8-106.9zM351.7 448.2c0-29.5 23.9-53.5 53.5-53.5s53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5-53.5-23.9-53.5-53.5zm157.9 267.1c-67.8 0-123.8-47.5-132.3-109h264.6c-8.6 61.5-64.5 109-132.3 109zm110-213.7c-29.5 0-53.5-23.9-53.5-53.5s23.9-53.5 53.5-53.5 53.5 23.9 53.5 53.5-23.9 53.5-53.5 53.5zM867.2 644.5V453.1h26.5c19.4 0 35.1 15.7 35.1 35.1v121.1c0 19.4-15.7 35.1-35.1 35.1h-26.5zM95.2 609.4V488.2c0-19.4 15.7-35.1 35.1-35.1h26.5v191.3h-26.5c-19.4 0-35.1-15.7-35.1-35.1zM561.5 149.6c0 23.4-15.6 43.3-36.9 49.7v44.9h-30v-44.9c-21.4-6.5-36.9-26.3-36.9-49.7 0-28.6 23.3-51.9 51.9-51.9s51.9 23.3 51.9 51.9z"></path></svg><div class="message-text"><div class="thinking-indicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`;
+//         const incomingMessageDiv = createMessageElement(botAvatarAndThinkingIndicator, "bot-message", "thinking");
+//         chatBody.appendChild(incomingMessageDiv);
+//         chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
+
+//         let requestMade = false;
+//         if (imageFileForThisMessage) {
+//             // If there's an image, always use the /upload endpoint.
+//             const formData = new FormData();
+//             formData.append('image', imageFileForThisMessage); // Send the actual File object
+//             if (textForThisMessage) {
+//                 formData.append('question', textForThisMessage);
+//             } else {
+//                  // Ensure 'question' is still sent, even if empty, if backend expects it with image
+//                  formData.append('question', ''); // Or a default like "Phân tích hình ảnh này."
+//             }
+//             responseFromChatbot("upload", formData, incomingMessageDiv);
+//             requestMade = true;
+//         } else if (textForThisMessage) {
+//             // Only text, no image
+//             responseFromChatbot("ask", JSON.stringify({ question: textForThisMessage }), incomingMessageDiv);
+//             requestMade = true;
+//         }
+
+//         if (!requestMade && incomingMessageDiv) {
+//             // This case should ideally not be reached if send button/enter is properly guarded.
+//             incomingMessageDiv.classList.remove("thinking");
+//             const textElement = incomingMessageDiv.querySelector(".message-text");
+//             if (textElement) {
+//                 textElement.innerHTML = "Không có gì để gửi."; 
+//             }
+//         }
+//     }, 600);
+// };
+
+//1/6/2025 temporary comment for block 2

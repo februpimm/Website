@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+:root {
+    --primary-color: #3b3a6d;
+    --secondary-color: #ffffff;
+    --accent-color: #ff6b6b;
+    --background-color: #f4f5f9;
+    --text-color: #333;
+    --sidebar-width: 240px;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 20px;
+    height: 100vh;
+}
+
+.logo h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.nav {
+    list-style: none;
+    padding: 0;
+}
+
+.nav li a {
+    text-decoration: none;
+    color: var(--secondary-color);
+    display: block;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.nav li a:hover,
+.nav li.active a {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+header h1 {
+    margin-bottom: 20px;
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+.card p {
+    font-size: 2em;
+    margin: 0;
+    font-weight: bold;
+}
+.card p.healthy {
+    color: #2ecc71;
+}
+
+.chart-container {
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+.table-container {
+    margin-top: 20px;
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table-container h2 {
+    margin-top: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+.severity-high {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.severity-medium {
+    color: #f39c12;
+    font-weight: bold;
+}
+
+.severity-low {
+    color: #3498db;
+    font-weight: bold;
+}

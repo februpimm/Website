@@ -1,0 +1,437 @@
+:root {
+    --bg-color: #202123;
+    --input-bg-color: #40414f; /* Hoặc #343541 như trong ảnh */
+    --text-color: #ECECF1;
+    --secondary-text-color: #A9A9B3;
+    --button-bg-color: #40414f; /* Nút thường */
+    --button-hover-bg: #565869;
+    --button-icon-color: #ACACBE;
+    --button-active-bg: #FFFFFF; /* Nút voice active */
+    --button-active-icon: #000000;
+    --user-avatar-bg: #f0ad4e; /* Màu cam cho avatar ví dụ */
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 25px; /* Padding nhỏ hơn một chút */
+    /* border-bottom: 1px solid var(--input-bg-color); */ /* Bỏ border nếu không có trong ảnh */
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--input-bg-color); /* Nền cho phần brand */
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.brand h1 {
+    font-size: 1em; /* Kích thước nhỏ hơn */
+    font-weight: 500;
+}
+
+.brand i {
+    color: var(--secondary-text-color);
+    font-size: 0.8em;
+}
+
+.user-status {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-status .btn {
+    padding: 6px 12px;
+    border: 1px solid var(--button-bg-color);
+    background-color: transparent; /* Nền trong suốt */
+    color: var(--secondary-text-color);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.user-status .btn:hover {
+     background-color: var(--button-bg-color);
+     color: var(--text-color);
+}
+
+.user-status .btn i {
+    font-size: 0.9em;
+}
+
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background-color: var(--user-avatar-bg);
+    color: var(--bg-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.chat-container {
+    width: 100%;
+    max-width: 750px; /* Rộng hơn một chút */
+    text-align: center;
+    margin-top: -12vh; /* Đẩy lên cao hơn */
+}
+
+.chat-container h2 {
+    font-size: 2.2em; /* Có thể nhỏ hơn một chút */
+    font-weight: 600;
+    margin-bottom: 35px;
+}
+
+.input-area {
+    position: relative;
+    background-color: var(--input-bg-color);
+    border-radius: 18px; /* Bo tròn nhiều hơn */
+    padding: 15px 20px 65px 20px; /* Tăng padding dưới để chứa nút */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid #50515d; /* Viền rõ hơn chút */
+    display: flex; /* Để căn chỉnh input và các nút */
+    flex-direction: column; /* Sắp xếp input trên các nút */
+}
+
+/* Styling cho div contenteditable giống textarea */
+#chat-input-visual {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.1em;
+    outline: none;
+    min-height: 50px; /* Chiều cao tối thiểu */
+    line-height: 1.5;
+    text-align: left; /* Căn chữ về bên trái */
+    cursor: text; /* Đổi con trỏ */
+    padding-bottom: 10px; /* Khoảng cách với nút bên dưới */
+}
+/* Placeholder cho contenteditable */
+#chat-input-visual:empty::before {
+    content: attr(data-placeholder);
+    color: var(--secondary-text-color);
+    pointer-events: none; /* Quan trọng để có thể click vào */
+}
+/* Mô phỏng con trỏ nhấp nháy (tùy chọn) */
+#chat-input-visual:focus {
+    border: 1px solid var(--text-color); /* Add a border on focus */
+    box-shadow: 0 0 5px var(--text-color); /* Add a subtle glow effect */
+}
+
+/* @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--text-color); } } */
+
+
+.input-actions {
+    position: absolute; /* Đặt các nút ở dưới cùng */
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+    display: flex;
+    justify-content: space-between; /* Tách nhóm nút trái và phải */
+    align-items: center;
+}
+
+.actions-left, .actions-right {
+    display: flex;
+    gap: 8px; /* Khoảng cách giữa các nút trong nhóm */
+}
+
+.action-btn {
+    background-color: var(--bg-color); /* Nền tối hơn */
+    color: var(--button-icon-color);
+    border: 1px solid var(--button-bg-color);
+    border-radius: 8px; /* Ít bo tròn hơn */
+    padding: 8px 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Căn giữa icon/text */
+    gap: 5px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    min-width: 38px; /* Chiều rộng tối thiểu cho nút chỉ có icon */
+    height: 38px; /* Chiều cao cố định */
+}
+.action-btn.text-btn {
+    padding: 8px 12px; /* Nhiều padding hơn cho nút có chữ */
+}
+
+
+.action-btn:hover {
+    background-color: var(--button-hover-bg);
+    border-color: var(--button-hover-bg);
+    color: var(--text-color);
+}
+.action-btn i {
+    font-size: 1em;
+}
+.action-btn .btn-arrow {
+     font-size: 0.7em; /* Mũi tên nhỏ hơn */
+     margin-left: 2px;
+}
+
+.action-btn.voice-inactive {
+    background-color: transparent;
+    border: 1px solid var(--button-bg-color);
+     color: var(--secondary-text-color); /* Màu mờ hơn */
+}
+.action-btn.voice-inactive:hover {
+    background-color: var(--button-hover-bg);
+     color: var(--text-color);
+}
+
+
+.action-btn.voice-active {
+    background-color: var(--button-active-bg);
+    color: var(--button-active-icon);
+    border: none;
+    border-radius: 50%; /* Bo tròn nút active */
+    width: 38px;
+}
+.action-btn.voice-active:hover {
+    background-color: #f0f0f0; /* Sáng hơn chút khi hover */
+}
+.action-btn.voice-active i {
+    font-size: 1.1em;
+}
+
+
+footer {
+    text-align: center;
+    padding: 15px;
+    font-size: 0.75em;
+    color: var(--secondary-text-color);
+    position: relative;
+    height: 50px; /* Chiều cao cố định cho footer để chứa nút help */
+}
+
+.help-btn {
+    position: absolute;
+    right: 20px;
+    bottom: 15px;
+    background-color: var(--button-bg-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 1em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.help-btn:hover {
+     background-color: #565869;
+}
+
+/* Responsive adjustments (ví dụ) */
+@media (max-width: 700px) {
+    .chat-container {
+        max-width: 95%;
+         margin-top: -5vh;
+    }
+     .chat-container h2 {
+        font-size: 1.8em;
+    }
+    .input-area {
+        padding: 10px 15px 60px 15px; /* Điều chỉnh padding */
+    }
+    .input-actions {
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+    }
+    .action-btn {
+        padding: 6px 8px;
+        min-width: 32px;
+        height: 32px;
+        font-size: 0.85em;
+    }
+     .action-btn.text-btn {
+        padding: 6px 10px;
+    }
+     .action-btn.voice-active {
+        width: 32px;
+    }
+     .actions-left, .actions-right {
+        gap: 5px;
+    }
+/* CHAT HISTORY STYLES - UPDATED */
+.chat-history {
+    width: 100%;
+    max-height: 70vh;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    text-align: left;
+    padding: 20px 15px;
+}
+
+/* Chat Message Styles - UPDATED */
+.chat-message {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    padding: 5px 0;
+}
+
+/* Message header with avatar and sender info */
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+/* Tin nhắn của người dùng (bên phải) */
+.user-message {
+    align-self: flex-end;
+    text-align: right;
+}
+
+.user-message .message-header {
+    justify-content: flex-end;
+}
+
+/* Tin nhắn của bot (bên trái) */
+.bot-message {
+    align-self: flex-start;
+}
+
+/* Avatar cho tin nhắn */
+.message-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.bot-avatar {
+    background-color: #444;
+    color: white;
+}
+
+/* User name display */
+.message-sender {
+    font-size: 0.85em;
+    color: var(--text-color);
+}
+
+/* Nội dung tin nhắn - UPDATED */
+.message-content {
+    line-height: 1.6;
+    word-break: break-word;
+    max-width: 90%;
+    color: var(--text-color);
+    overflow: hidden;
+}
+
+.user-message .message-content {
+    margin-left: auto;
+    text-align: right;
+}
+
+.bot-message .message-content {
+    margin-right: auto;
+    text-align: left;
+}
+
+/* Numbered list in messages */
+.message-content ol {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.message-content ol li {
+    margin-bottom: 10px;
+}
+
+/* References section */
+.message-references {
+    font-style: italic;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+/* Citation links */
+.message-content a {
+    color: #6c95ca;
+    text-decoration: none;
+}
+
+.message-content a:hover {
+    text-decoration: underline;
+}
+
+/* Message index indicator (circle with number) */
+.message-index {
+    min-width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #f0ad4e;
+    color: #202123;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 10px;
+}
+.user-image-preview {
+    max-width: 200px;
+    border-radius: 10px;
+    margin-top: 5px;
+}
+.user-image-preview img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;    
+}
+}

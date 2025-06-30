@@ -1,0 +1,1 @@
+{"anomaly_threshold": 0.8, "alert_email": "admin@example.com", "logs_per_page": 20}

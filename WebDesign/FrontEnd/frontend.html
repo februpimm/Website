@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anomaly Detection Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>Anomaly Detection</h2>
+            </div>
+            <ul class="nav">
+                <li class="active"><a href="#">Dashboard</a></li>
+                <li><a href="#">Traffic Analysis</a></li>
+                <li><a href="#">Anomaly Alerts</a></li>
+                <li><a href="#">Reports</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </aside>
+        <main class="main-content">
+            <header>
+                <h1>Dashboard Overview</h1>
+            </header>
+            <div class="cards-container">
+                <div class="card">
+                    <h3>Total Requests</h3>
+                    <p>1,234,567</p>
+                </div>
+                <div class="card">
+                    <h3>Anomalies Detected</h3>
+                    <p>1,284</p>
+                </div>
+                <div class="card">
+                    <h3>Warning</h3>
+                    <p>54</p>
+                </div>
+
+                <div class="card">
+                    <h3>System Health</h3>
+                    <p class="healthy">Healthy</p>
+                </div>
+
+            </div>
+            <div class="chart-container">
+                 <canvas id="trafficChart"></canvas>
+            </div>
+            <div class="table-container">
+                <h2>Recent Anomalies</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>IP Address</th>
+                            <th>Request</th>
+                            <th>Status</th>
+                            <th>Severity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2024-05-12 10:30:15</td>
+                            <td>192.168.1.101</td>
+                            <td>GET /admin</td>
+                            <td>404</td>
+                            <td class="severity-high">High</td>
+                        </tr>
+                         <tr>
+                            <td>2024-05-12 10:32:45</td>
+                            <td>10.0.0.5</td>
+                            <td>POST /login</td>
+                            <td>200</td>
+                            <td class="severity-medium">Medium</td>
+                        </tr>
+                        <tr>
+                            <td>2024-05-12 10:35:22</td>
+                            <td>172.16.0.12</td>
+                            <td>GET /products/123</td>
+                            <td>200</td>
+                            <td class="severity-low">Low</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+<script>
+    var ctx = document.getElementById('trafficChart').getContext('2d');
+    var trafficChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00'],
+            datasets: [{
+                label: 'Normal Traffic',
+                data: [1200, 1900, 3000, 5000, 2300, 2800, 3200],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Anomalies Traffic',
+                data: [10, 20, 30, 100, 20, 28, 32],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }
+        ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
