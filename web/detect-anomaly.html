@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOG GUARD | Detect Anomaly Log</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #181d23 0%, #23262b 100%);
+            min-height: 100vh;
+            font-family: 'Inter', Arial, sans-serif;
+            color: #e0eef0;
+        }
+        .navbar {
+            width: 100%;
+            background: rgba(24,29,35,0.98);
+            box-shadow: 0 4px 24px 0 rgba(0,188,212,0.10), 0 1.5px 0 0 #00BCD4;
+            border-bottom: 2.5px solid #00BCD4;
+            padding: 0 48px;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            height: 70px;
+        }
+        .navbar-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #fff;
+            user-select: none;
+            text-shadow: 0 2px 8px rgba(0,188,212,0.10);
+        }
+        .navbar-title span {
+            color: #00BCD4;
+        }
+        .navbar-links {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+            margin: 0 auto;
+            padding: 0;
+        }
+        .navbar-links a {
+            color: #e0eef0;
+            text-decoration: none;
+            font-size: 1.15rem;
+            font-weight: 600;
+            transition: color 0.2s;
+            letter-spacing: 0.2px;
+        }
+        .navbar-links a:hover, .navbar-links a.active {
+            color: #00BCD4;
+        }
+        @media (max-width: 900px) {
+            .navbar-title { font-size: 1.3rem; }
+            .navbar-links a { font-size: 1rem; }
+        }
+        @media (max-width: 600px) {
+            .navbar { padding: 0 10px; min-height: 54px; }
+            .navbar-title { font-size: 20px; }
+            .navbar-links a { font-size: 15px; }
+            .navbar-brand { height: 54px; }
+        }
+        .detect-center-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: 90px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span class="navbar-title"><span style="color:#fff;">LOG</span><span style="color:#00BCD4;">GUARD</span></span>
+        </div>
+        <ul class="navbar-links" style="margin: 0 auto;">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="chat.html">Chat</a></li>
+            <li><a href="detect-anomaly.html" class="active">Detect Anomaly Log</a></li>
+        </ul>
+        <div class="navbar-buttons"></div>
+    </nav>
+    <div class="detect-center-wrapper">
+        <div style="background:#181c23;border-radius:16px;padding:40px 32px;box-shadow:0 0 16px #00e6ff22;width:400px;max-width:90vw;">
+            <h2 style="color:#00e6ff;text-align:center;margin-bottom:16px;"><span style="font-size:1.3em;vertical-align:middle;">🔎</span> <b>DETECT ANOMALY LOG</b></h2>
+            <p style="color:#bfc9d1;text-align:center;margin-bottom:24px;">Paste the log entry or upload your log file below and check if it contains anomalies or threats.<br>We'll run basic anomaly checks for you.</p>
+            <input type="text" placeholder="Paste log entry or file path..." style="width:100%;padding:12px 10px;border-radius:6px;border:none;background:#232a34;color:#fff;margin-bottom:12px;font-size:1em;">
+            <input type="file" style="width:100%;margin-bottom:18px;background:#232a34;color:#fff;">
+            <button style="width:100%;background:#00e6ff;color:#181c23;font-weight:bold;font-size:1.1em;padding:12px 0;border:none;border-radius:6px;box-shadow:0 2px 8px #00e6ff44;cursor:pointer;transition:background 0.2s;">CHECK ANOMALY</button>
+            <div style="background:#232a34;border-radius:10px;padding:18px 16px;margin-top:22px;">
+                <b style="color:#00e6ff;">Common Anomaly Indicators:</b>
+                <ul style="color:#bfc9d1;margin:10px 0 0 18px;padding:0;font-size:0.98em;">
+                    <li>Unusual IP addresses or geolocations</li>
+                    <li>High frequency of requests in short time</li>
+                    <li>Suspicious user agents or request patterns</li>
+                    <li>Access to restricted endpoints</li>
+                    <li>Unexpected error or status codes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <footer style="width:100vw;text-align:center;color:#b0b8c1;font-size:1rem;position:fixed;bottom:0;left:0;padding:18px 0 10px 0;background:none;z-index:10;letter-spacing:0.5px;">© 2025 Log Guard. All rights reserved.</footer>
+</body>
+</html>

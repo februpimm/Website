@@ -331,7 +331,7 @@
             <li><a href="home.html">Home</a></li>
             <li><a href="dashboard.html" class="active">Dashboard</a></li>
             <li><a href="chat.html">Chat</a></li>
-            <li><a href="#">LogGuard</a></li>
+            <li><a href="detect-anomaly.html">Detect Anomaly Log</a></li>
         </ul>
         <div class="navbar-buttons"></div>
     </nav>
@@ -497,6 +497,26 @@
             if (target) target.appendChild(card);
         }
     });
+
+    // แสดงข้อมูล anomaly log ที่รับมาจาก detect-anomaly.html
+    const anomalyInput = localStorage.getItem('anomalyLogInput');
+    if (anomalyInput) {
+        // สร้างกล่องแสดงข้อมูล anomaly log
+        const anomalyBox = document.createElement('div');
+        anomalyBox.style.background = '#10151c';
+        anomalyBox.style.border = '2px solid #00BCD4';
+        anomalyBox.style.borderRadius = '12px';
+        anomalyBox.style.padding = '18px 24px';
+        anomalyBox.style.margin = '18px 0 32px 0';
+        anomalyBox.style.color = '#e0eef0';
+        anomalyBox.style.fontSize = '1.1rem';
+        anomalyBox.innerHTML = `<b>Log Input:</b><br><textarea readonly style='width:100%;min-height:120px;background:#181d23;color:#00BCD4;border:1.5px solid #00BCD4;border-radius:8px;padding:10px;font-size:1rem;margin-top:8px;'>${anomalyInput}</textarea>`;
+        // แทรกไว้ด้านบนสุดของ .main-content
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) mainContent.insertBefore(anomalyBox, mainContent.firstChild);
+        // ลบค่าออกจาก localStorage เพื่อไม่ให้แสดงซ้ำ
+        localStorage.removeItem('anomalyLogInput');
+    }
     </script>
 </body>
 </html> 

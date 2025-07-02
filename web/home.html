@@ -167,11 +167,11 @@
         <div class="navbar-brand">
             <span class="navbar-title"><span style="color:#fff;">LOG</span><span style="color:#00BCD4;">GUARD</span></span>
         </div>
-        <ul class="navbar-links">
+        <ul class="navbar-links" style="margin: 0 auto;">
             <li><a href="home.html" class="active">Home</a></li>
             <li><a href="dashboard.html">Dashboard</a></li>
             <li><a href="chat.html">Chat</a></li>
-            <li><a href="#">LogGuard</a></li>
+            <li><a href="detect-anomaly.html">Detect Anomaly Log</a></li>
         </ul>
         <div class="navbar-buttons"></div>
     </nav>
@@ -184,6 +184,10 @@
       </div>
     </div>
     <script type="module" src="script.js"></script>
+    <script type="module">
+    import { renderNavbarButtons } from './script.js';
+    document.addEventListener('DOMContentLoaded', renderNavbarButtons);
+    </script>
     <footer style="width:100vw;text-align:center;color:#b0b8c1;font-size:1rem;position:fixed;bottom:0;left:0;padding:18px 0 10px 0;background:none;z-index:10;letter-spacing:0.5px;">© 2025 Log Guard. All rights reserved.</footer>
 </body>
 </html> 
